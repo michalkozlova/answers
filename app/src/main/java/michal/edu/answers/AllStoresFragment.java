@@ -1,8 +1,11 @@
 package michal.edu.answers;
 
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +51,10 @@ public class AllStoresFragment extends Fragment {
         adapter = new StoreAdapter(stores, getActivity());
         //gvStores.setLayoutManager(new LinearLayoutManager(getContext()));
         gvStores.setAdapter(adapter);
+
+        getActivity().getWindow().setStatusBarColor(Color.parseColor("#ff4954F7"));
+        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
+        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
 
         return v;
     }

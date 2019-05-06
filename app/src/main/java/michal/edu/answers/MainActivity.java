@@ -1,7 +1,15 @@
 package michal.edu.answers;
 
+import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -24,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-
+                case R.id.my_feedbacks:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyFeedbackFragment()).commit();
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.all_stores:
                     getStoresFromFirebase(new StoreListener() {
                         @Override
                         public void onStoreCallBack(ArrayList<Store> stores) {
@@ -50,8 +58,29 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+        navigation.setSelectedItemId(R.id.all_stores);
+        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
+
+
+
+        getStoresFromFirebase(new StoreListener() {
+            @Override
+            public void onStoreCallBack(ArrayList<Store> stores) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, AllStoresFragment.newInstance(stores)).commit();
+            }
+        });
+        getWindow().setStatusBarColor(Color.parseColor("#ff4954F7"));
 
     }
+
+
+
+
+
+
+
+
 
     public ArrayList<Store> getStoresFromFirebase(final StoreListener callback){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores");
