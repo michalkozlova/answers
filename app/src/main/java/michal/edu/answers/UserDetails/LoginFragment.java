@@ -1,4 +1,4 @@
-package michal.edu.answers;
+package michal.edu.answers.UserDetails;
 
 
 import android.content.res.ColorStateList;
@@ -12,7 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
+
+import michal.edu.answers.R;
 
 /**
  * A simple {@link Fragment} subclass.

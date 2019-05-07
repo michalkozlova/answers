@@ -1,19 +1,26 @@
 package michal.edu.answers;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import michal.edu.answers.Branch.AllBranchesFragment;
+import michal.edu.answers.Stores.Store;
 
 public class StoreAdapter extends BaseAdapter {
 
@@ -42,7 +49,7 @@ public class StoreAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Store store = stores.get(position);
+        final Store store = stores.get(position);
 
         if (convertView == null){
             final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -52,17 +59,46 @@ public class StoreAdapter extends BaseAdapter {
         final TextView tvStoreName = convertView.findViewById(R.id.storeName);
         final TextView tvFirstLetter = convertView.findViewById(R.id.firstLetter);
         final CardView cardView = convertView.findViewById(R.id.cardView);
+        final ImageView cardImage = convertView.findViewById(R.id.cardImage);
 
         tvStoreName.setText(store.getStoreNameEng());
-        tvFirstLetter.setText(Character.toString(store.getStoreNameEng().charAt(0)));
+
+        StorageReference storageRef = MyImageStorage.getInstance();
+
+        storageRef.child(store.getStoreNameEng()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(activity).load(uri).into(cardImage);
+                tvFirstLetter.setText("");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                tvFirstLetter.setText(Character.toString(store.getStoreNameEng().charAt(0)));
+            }
+        });
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new AllBranchesFragment()).addToBackStack("").commit();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, AllBranchesFragment.newInstance(store.getOwnerId())).addToBackStack("").commit();
             }
         });
 
         return convertView;
+    }
+}
+
+
+//TODO: check singletonClass
+class MyImageStorage{
+    private static StorageReference myImageStorage;
+
+    public static StorageReference getInstance(){
+        if (myImageStorage == null){
+            myImageStorage = FirebaseStorage.getInstance().getReference();
+        }
+
+        return myImageStorage;
     }
 }

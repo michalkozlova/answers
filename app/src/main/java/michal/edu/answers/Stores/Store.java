@@ -1,4 +1,4 @@
-package michal.edu.answers;
+package michal.edu.answers.Stores;
 
 import java.io.Serializable;
 
@@ -10,18 +10,24 @@ public class Store implements Serializable {
     private Integer storeType;
     private String StoreNameEng;
     private String StoreNameHeb;
+    private String ownerId;
 
     public Store() {
     }
 
-    public Store(Integer storeType, String storeNameEng, String storeNameHeb) {
+    public Store(Integer storeType, String storeNameEng, String storeNameHeb, String ownerId) {
         this.storeType = storeType;
         StoreNameEng = storeNameEng;
         StoreNameHeb = storeNameHeb;
+        this.ownerId = ownerId;
     }
 
     public Integer getStoreType() {
         return storeType;
+    }
+
+    public void setStoreType(Integer storeType) {
+        this.storeType = storeType;
     }
 
     public String getStoreNameEng() {
@@ -40,8 +46,12 @@ public class Store implements Serializable {
         StoreNameHeb = storeNameHeb;
     }
 
-    public void setStoreType(Integer storeType) {
-        this.storeType = storeType;
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
     @Override
@@ -50,7 +60,7 @@ public class Store implements Serializable {
                 "storeType=" + storeType +
                 ", StoreNameEng='" + StoreNameEng + '\'' +
                 ", StoreNameHeb='" + StoreNameHeb + '\'' +
+                ", ownerId='" + ownerId + '\'' +
                 '}';
     }
-
 }

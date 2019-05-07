@@ -1,28 +1,30 @@
-package michal.edu.answers;
+package michal.edu.answers.Stores;
 
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.ImageView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import michal.edu.answers.R;
+import michal.edu.answers.StoreAdapter;
 
 
 /**
@@ -86,6 +88,8 @@ public class AllStoresFragment extends Fragment {
         BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
         navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
 
+
+
         return v;
     }
 
@@ -102,6 +106,4 @@ public class AllStoresFragment extends Fragment {
             }
         }
     }
-
-
 }
