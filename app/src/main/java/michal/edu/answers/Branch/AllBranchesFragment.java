@@ -3,7 +3,6 @@ package michal.edu.answers.Branch;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,20 +18,18 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import michal.edu.answers.DataSource;
+import michal.edu.answers.Models.Branch;
+import michal.edu.answers.Models.Section;
 import michal.edu.answers.MyImageStorage;
 import michal.edu.answers.R;
-import michal.edu.answers.Stores.Store;
+import michal.edu.answers.Models.Store;
+import michal.edu.answers.SectionListener;
 
 
 /**
@@ -44,6 +41,7 @@ public class AllBranchesFragment extends Fragment {
     private BranchAdapter adapter;
     private TextView tvBranches, firstLetter;
     private ImageView cardImage;
+    private DataSource dataSource = DataSource.getInstance();
 
     public static AllBranchesFragment newInstance(Store store) {
 
@@ -60,35 +58,22 @@ public class AllBranchesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_all_branches, container, false);
 
-        final Store thisStore = (Store) getArguments().getSerializable("store");
-
         rvBranches = v.findViewById(R.id.rvBranches);
         tvBranches = v.findViewById(R.id.tvBranches);
         firstLetter = v.findViewById(R.id.firstLetter);
         cardImage = v.findViewById(R.id.cardImage);
 
-        new DataSource().getBranchesFromFirebase(thisStore.getOwnerId(), new BranchListener() {
+        final Store thisStore = (Store) getArguments().getSerializable("store");
+
+        tvBranches.setText("BRANCHES: " + thisStore.getStoreName());
+        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
+
+        dataSource.getBranchesFromFirebase(thisStore, new BranchListener() {
             @Override
             public void onBranchCallback(ArrayList<Branch> branches) {
-                adapter = new BranchAdapter(branches, getActivity());
+                adapter = new BranchAdapter(thisStore, branches, getActivity());
                 rvBranches.setLayoutManager(new LinearLayoutManager(getContext()));
                 rvBranches.setAdapter(adapter);
-            }
-        });
-
-        tvBranches.setText("BRANCHES: " + thisStore.getStoreNameEng());
-        StorageReference storageRef = MyImageStorage.getInstance();
-
-        storageRef.child(thisStore.getStoreNameEng()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.with(getContext()).load(uri).into(cardImage);
-                firstLetter.setText("");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                firstLetter.setText(Character.toString(thisStore.getStoreNameEng().charAt(0)));
             }
         });
 

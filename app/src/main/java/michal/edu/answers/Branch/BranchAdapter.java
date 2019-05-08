@@ -7,19 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.List;
 
+import michal.edu.answers.Models.Branch;
+import michal.edu.answers.Models.Store;
 import michal.edu.answers.R;
-import michal.edu.answers.StartFeedbackFragment;
+import michal.edu.answers.LeaveFeedback.StartFeedbackFragment;
 
 public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchViewHolder>{
 
+    private Store store;
     private List<Branch> branches;
     private FragmentActivity activity;
 
-    public BranchAdapter(List<Branch> branches, FragmentActivity activity) {
+    public BranchAdapter(Store store, List<Branch> branches, FragmentActivity activity) {
+        this.store = store;
         this.branches = branches;
         this.activity = activity;
     }
@@ -27,20 +30,24 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchView
     @NonNull
     @Override
     public BranchViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(activity).inflate(R.layout.branch_item, viewGroup, false);
+        View v = LayoutInflater.from(activity).inflate(R.layout.item_branch, viewGroup, false);
         return new BranchViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BranchViewHolder branchViewHolder, int i) {
-        Branch branch = branches.get(i);
+        final Branch branch = branches.get(i);
 
-        branchViewHolder.smallWhiteButton.setText(branch.getBranchNameEng());
+        branchViewHolder.smallWhiteButton.setText(store.getStoreName() + " / " + branch.getBranchName());
 
         branchViewHolder.smallWhiteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new StartFeedbackFragment()).addToBackStack("").commit();
+                activity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, StartFeedbackFragment.newInstance(store, branch.getBranchName()))
+                        .addToBackStack("")
+                        .commit();
                 //Toast.makeText(activity, "hey-hey!", Toast.LENGTH_SHORT).show();
             }
         });

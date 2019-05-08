@@ -13,12 +13,14 @@ import java.util.ArrayList;
 
 import michal.edu.answers.Feedbacks.MyFeedbackFragment;
 import michal.edu.answers.Stores.AllStoresFragment;
-import michal.edu.answers.Stores.Store;
+import michal.edu.answers.Models.Store;
 import michal.edu.answers.Stores.StoreListener;
 import michal.edu.answers.UserDetails.LoginFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private DataSource dataSource = DataSource.getInstance();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -27,18 +29,30 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.my_feedbacks:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new MyFeedbackFragment()).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.container, new MyFeedbackFragment())
+                            .addToBackStack("")
+                            .commit();
                     return true;
                 case R.id.all_stores:
-                    new DataSource().getStoresFromFirebase(new StoreListener() {
+                    dataSource.getStoresFromFirebase(new StoreListener() {
                         @Override
                         public void onStoreCallBack(ArrayList<Store> stores) {
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, AllStoresFragment.newInstance(stores)).commit();
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.container, AllStoresFragment.newInstance(stores))
+                                    .addToBackStack("")
+                                    .commit();
                         }
                     });
                     return true;
                 case R.id.personal_details:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new LoginFragment()).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.container, new LoginFragment())
+                            .addToBackStack("")
+                            .commit();
                     return true;
             }
             return false;
@@ -57,11 +71,11 @@ public class MainActivity extends AppCompatActivity {
         navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
 
 
-        new DataSource().getStoresFromFirebase(new StoreListener() {
-            @Override
-            public void onStoreCallBack(ArrayList<Store> stores) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, AllStoresFragment.newInstance(stores)).commit();
-            }
-        });
+        dataSource.getStoresFromFirebase(new StoreListener() {
+                        @Override
+                        public void onStoreCallBack(ArrayList<Store> stores) {
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, AllStoresFragment.newInstance(stores)).commit();
+                        }
+                    });
     }
 }

@@ -1,6 +1,8 @@
-package michal.edu.answers.Branch;
+package michal.edu.answers.Models;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
 
     private String city;
     private String street;

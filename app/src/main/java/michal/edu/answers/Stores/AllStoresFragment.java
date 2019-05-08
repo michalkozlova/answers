@@ -14,6 +14,7 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 
+import michal.edu.answers.Models.Store;
 import michal.edu.answers.R;
 
 
