@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ public class FirstSectionFragment extends Fragment {
     private TextView tvTitleFirstSectionFeedback, firstLetter;
     private ImageView cardImage;
     private RecyclerView rvQuestions;
+    private Button btnNext;
 
     public static FirstSectionFragment newInstance(Store store, String branchName) {
 
@@ -53,6 +55,7 @@ public class FirstSectionFragment extends Fragment {
         cardImage = v.findViewById(R.id.cardImage);
         firstLetter = v.findViewById(R.id.firstLetter);
         rvQuestions = v.findViewById(R.id.rvQuestions);
+        btnNext = v.findViewById(R.id.btnNext);
 
         final Store thisStore = (Store) getArguments().getSerializable("store");
         final String thisBranchName = (String) getArguments().getSerializable("branchName");
@@ -72,6 +75,18 @@ public class FirstSectionFragment extends Fragment {
         dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
 
         progressBar.setProgress(2);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, SecondSectionFragment.newInstance(thisStore, thisBranchName))
+                        .disallowAddToBackStack()
+                        .commit();
+            }
+        });
 
 
         return v;

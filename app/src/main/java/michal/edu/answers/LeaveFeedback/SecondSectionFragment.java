@@ -3,37 +3,43 @@ package michal.edu.answers.LeaveFeedback;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import michal.edu.answers.Adapters.QuestionAdapter;
 import michal.edu.answers.DataSource;
+import michal.edu.answers.Listeners.SectionListener;
+import michal.edu.answers.Models.Section;
 import michal.edu.answers.Models.Store;
 import michal.edu.answers.R;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StartFeedbackFragment extends Fragment {
+public class SecondSectionFragment extends Fragment {
 
     private DataSource dataSource = DataSource.getInstance();
+    private ProgressBar progressBar;
+    private TextView tvTitleSecondSectionFeedback, firstLetter;
     private ImageView cardImage;
-    private TextView firstLetter, tvStoreNameBranchName;
+    private RecyclerView rvQuestions;
     private Button btnNext;
-    private Spinner spinnerMonth;
 
-    public static StartFeedbackFragment newInstance(Store store, String branchName) {
+    public static SecondSectionFragment newInstance(Store store, String branchName) {
 
         Bundle args = new Bundle();
         args.putSerializable("store", store);
         args.putSerializable("branchName", branchName);
-        StartFeedbackFragment fragment = new StartFeedbackFragment();
+        SecondSectionFragment fragment = new SecondSectionFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,23 +48,34 @@ public class StartFeedbackFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_start_feedback, container, false);
+        View v = inflater.inflate(R.layout.fragment_section, container, false);
 
-        spinnerMonth = v.findViewById(R.id.spinnerMonth);
+        progressBar = v.findViewById(R.id.progressBar);
+        tvTitleSecondSectionFeedback = v.findViewById(R.id.tvTitleSectionFeedback);
         cardImage = v.findViewById(R.id.cardImage);
         firstLetter = v.findViewById(R.id.firstLetter);
-        tvStoreNameBranchName = v.findViewById(R.id.tvStoreNameBranchName);
+        rvQuestions = v.findViewById(R.id.rvQuestions);
         btnNext = v.findViewById(R.id.btnNext);
+
 
         final Store thisStore = (Store) getArguments().getSerializable("store");
         final String thisBranchName = (String) getArguments().getSerializable("branchName");
 
-        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
-        tvStoreNameBranchName.setText(thisStore.getStoreName() + " / " + thisBranchName);
+        dataSource.getQuestionnaireFromFirebase(thisStore, new SectionListener() {
+            @Override
+            public void onSectionCallback(ArrayList<Section> questionnaire) {
+                tvTitleSecondSectionFeedback.setText("FEEDBACK: " + questionnaire.get(1).getSectionName());
 
-        ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(getContext(), R.array.months, android.R.layout.simple_spinner_dropdown_item);
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMonth.setAdapter(monthAdapter);
+                QuestionAdapter adapter = new QuestionAdapter(questionnaire.get(1).getQuestions(), getActivity());
+                rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
+                rvQuestions.setAdapter(adapter);
+
+            }
+        });
+
+        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
+
+        progressBar.setProgress(3);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +83,7 @@ public class StartFeedbackFragment extends Fragment {
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.container, FirstSectionFragment.newInstance(thisStore, thisBranchName))
+                        .replace(R.id.container, ThirdSectionFragment.newInstance(thisStore, thisBranchName))
                         .disallowAddToBackStack()
                         .commit();
             }
