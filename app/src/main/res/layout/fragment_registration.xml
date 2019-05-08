@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText5" />
 
     <Spinner
-        android:id="@+id/phoneExtention"
+        android:id="@+id/spinnerDate"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -111,7 +111,7 @@
         android:textColorHint="#FEDC32"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="@+id/editText6"
-        app:layout_constraintStart_toEndOf="@+id/phoneExtention"
+        app:layout_constraintStart_toEndOf="@+id/spinnerDate"
         app:layout_constraintTop_toBottomOf="@+id/editText6" />
 
     <Button
@@ -127,7 +127,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/editText7"
-        app:layout_constraintStart_toStartOf="@+id/phoneExtention"
+        app:layout_constraintStart_toStartOf="@+id/spinnerDate"
         app:layout_constraintTop_toBottomOf="@+id/editText7" />
 
 </android.support.constraint.ConstraintLayout>

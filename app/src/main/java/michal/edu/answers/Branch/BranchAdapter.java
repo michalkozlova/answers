@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.List;
 
 import michal.edu.answers.R;
+import michal.edu.answers.StartFeedbackFragment;
 
 public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchViewHolder>{
 
@@ -34,6 +36,14 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchView
         Branch branch = branches.get(i);
 
         branchViewHolder.smallWhiteButton.setText(branch.getBranchNameEng());
+
+        branchViewHolder.smallWhiteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, new StartFeedbackFragment()).addToBackStack("").commit();
+                //Toast.makeText(activity, "hey-hey!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

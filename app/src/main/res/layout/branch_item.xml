@@ -21,7 +21,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:enabled="false"/>
 
         <Button
             android:id="@+id/pinkButton"
@@ -31,18 +32,21 @@
             app:layout_constraintBottom_toBottomOf="@+id/whiteButton"
             app:layout_constraintStart_toStartOf="@+id/whiteButton"
             app:layout_constraintTop_toTopOf="@+id/whiteButton"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            android:enabled="false"/>
 
     <Button
         android:id="@+id/smallWhiteButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:background="@drawable/white_button"
+        android:layout_marginEnd="8dp"
         android:text="Sushi Rehavia / German Colony"
         android:textAlignment="textStart"
         android:textAllCaps="false"
+        android:background="#00ffffff"
         app:layout_constraintBottom_toBottomOf="@+id/whiteButton"
+        app:layout_constraintEnd_toEndOf="@+id/whiteButton"
         app:layout_constraintStart_toEndOf="@+id/pinkButton"
         app:layout_constraintTop_toTopOf="@+id/whiteButton" />
 

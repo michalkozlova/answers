@@ -28,7 +28,7 @@ public class RegistrationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_registration, container, false);
 
-        Spinner phoneExtention = v.findViewById(R.id.phoneExtention);
+        Spinner phoneExtention = v.findViewById(R.id.spinnerDate);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.phone_extentions, R.layout.phone_spinner_item);
         adapter.setDropDownViewResource(R.layout.phone_spinner_item);

@@ -3,6 +3,8 @@ package michal.edu.answers.Branch;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,16 +14,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import michal.edu.answers.DataSource;
+import michal.edu.answers.MyImageStorage;
 import michal.edu.answers.R;
+import michal.edu.answers.Stores.Store;
 
 
 /**
@@ -31,11 +42,13 @@ public class AllBranchesFragment extends Fragment {
 
     private RecyclerView rvBranches;
     private BranchAdapter adapter;
+    private TextView tvBranches, firstLetter;
+    private ImageView cardImage;
 
-    public static AllBranchesFragment newInstance(String ownerID) {
+    public static AllBranchesFragment newInstance(Store store) {
 
         Bundle args = new Bundle();
-        args.putSerializable("ownerId", ownerID);
+        args.putSerializable("store", store);
         AllBranchesFragment fragment = new AllBranchesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -47,19 +60,37 @@ public class AllBranchesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_all_branches, container, false);
 
-        String thisOwnerId = (String) getArguments().getSerializable("ownerId");
+        final Store thisStore = (Store) getArguments().getSerializable("store");
 
         rvBranches = v.findViewById(R.id.rvBranches);
-        getBranchesFromFirebase(thisOwnerId, new BranchListener() {
+        tvBranches = v.findViewById(R.id.tvBranches);
+        firstLetter = v.findViewById(R.id.firstLetter);
+        cardImage = v.findViewById(R.id.cardImage);
+
+        new DataSource().getBranchesFromFirebase(thisStore.getOwnerId(), new BranchListener() {
             @Override
             public void onBranchCallback(ArrayList<Branch> branches) {
                 adapter = new BranchAdapter(branches, getActivity());
                 rvBranches.setLayoutManager(new LinearLayoutManager(getContext()));
                 rvBranches.setAdapter(adapter);
-                System.out.println(branches);
             }
         });
 
+        tvBranches.setText("BRANCHES: " + thisStore.getStoreNameEng());
+        StorageReference storageRef = MyImageStorage.getInstance();
+
+        storageRef.child(thisStore.getStoreNameEng()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(getContext()).load(uri).into(cardImage);
+                firstLetter.setText("");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                firstLetter.setText(Character.toString(thisStore.getStoreNameEng().charAt(0)));
+            }
+        });
 
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffFEDC32"));
         BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
@@ -68,32 +99,4 @@ public class AllBranchesFragment extends Fragment {
         return v;
     }
 
-
-    public ArrayList<Branch> getBranchesFromFirebase(String ownerId, final BranchListener callback){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Branches").child(ownerId);
-        final ArrayList<Branch> mBranches = new ArrayList<>();
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Branch value = snapshot.getValue(Branch.class);
-                    mBranches.add(value);
-                }
-
-                if (mBranches.isEmpty()){
-                    System.out.println("no branches");
-                }else {
-                    callback.onBranchCallback(mBranches);
-                    //System.out.println(mBranches);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return mBranches;
-    }
 }

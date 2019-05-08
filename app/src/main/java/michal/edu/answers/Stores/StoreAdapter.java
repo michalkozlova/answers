@@ -1,4 +1,4 @@
-package michal.edu.answers;
+package michal.edu.answers.Stores;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -20,6 +20,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import michal.edu.answers.Branch.AllBranchesFragment;
+import michal.edu.answers.MyImageStorage;
+import michal.edu.answers.R;
 import michal.edu.answers.Stores.Store;
 
 public class StoreAdapter extends BaseAdapter {
@@ -81,24 +83,10 @@ public class StoreAdapter extends BaseAdapter {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, AllBranchesFragment.newInstance(store.getOwnerId())).addToBackStack("").commit();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, AllBranchesFragment.newInstance(store)).addToBackStack("").commit();
             }
         });
 
         return convertView;
-    }
-}
-
-
-//TODO: check singletonClass
-class MyImageStorage{
-    private static StorageReference myImageStorage;
-
-    public static StorageReference getInstance(){
-        if (myImageStorage == null){
-            myImageStorage = FirebaseStorage.getInstance().getReference();
-        }
-
-        return myImageStorage;
     }
 }

@@ -44,7 +44,7 @@
         app:srcCompat="@mipmap/login_round" />
 
     <Spinner
-        android:id="@+id/phoneExtention"
+        android:id="@+id/spinnerDate"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:outlineSpotShadowColor="@color/yellow"
@@ -61,7 +61,7 @@
         android:inputType="number"
         android:textColor="@color/yellow"
         app:layout_constraintEnd_toEndOf="@+id/editText2"
-        app:layout_constraintStart_toEndOf="@+id/phoneExtention"
+        app:layout_constraintStart_toEndOf="@+id/spinnerDate"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText

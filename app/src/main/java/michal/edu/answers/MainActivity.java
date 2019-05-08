@@ -9,14 +9,9 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
+import michal.edu.answers.Feedbacks.MyFeedbackFragment;
 import michal.edu.answers.Stores.AllStoresFragment;
 import michal.edu.answers.Stores.Store;
 import michal.edu.answers.Stores.StoreListener;
@@ -62,15 +57,11 @@ public class MainActivity extends AppCompatActivity {
         navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
 
 
-
         new DataSource().getStoresFromFirebase(new StoreListener() {
             @Override
             public void onStoreCallBack(ArrayList<Store> stores) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, AllStoresFragment.newInstance(stores)).commit();
             }
         });
-
-        getWindow().setStatusBarColor(Color.parseColor("#ff4954F7"));
-
     }
 }

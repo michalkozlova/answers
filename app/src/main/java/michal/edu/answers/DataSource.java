@@ -7,9 +7,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import michal.edu.answers.Branch.Branch;
+import michal.edu.answers.Branch.BranchListener;
 import michal.edu.answers.Stores.Store;
 import michal.edu.answers.Stores.StoreListener;
 
@@ -42,4 +46,37 @@ public class DataSource {
         return mStores;
     }
 
+
+
+    public ArrayList<Branch> getBranchesFromFirebase(String ownerId, final BranchListener callback){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Branches").child(ownerId);
+        final ArrayList<Branch> mBranches = new ArrayList<>();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Branch value = snapshot.getValue(Branch.class);
+                    mBranches.add(value);
+                }
+
+                if (mBranches.isEmpty()){
+                    System.out.println("no branches");
+                }else {
+                    callback.onBranchCallback(mBranches);
+                    //System.out.println(mBranches);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return mBranches;
+    }
+
 }
+
+
+
