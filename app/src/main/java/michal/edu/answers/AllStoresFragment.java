@@ -1,4 +1,4 @@
-package michal.edu.answers.Stores;
+package michal.edu.answers;
 
 
 import android.content.res.ColorStateList;
@@ -14,8 +14,8 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 
+import michal.edu.answers.Adapters.StoreAdapter;
 import michal.edu.answers.Models.Store;
-import michal.edu.answers.R;
 
 
 /**

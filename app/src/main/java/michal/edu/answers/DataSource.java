@@ -18,12 +18,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import michal.edu.answers.Listeners.SectionListener;
 import michal.edu.answers.Models.Branch;
-import michal.edu.answers.Branch.BranchListener;
-import michal.edu.answers.Models.Question;
+import michal.edu.answers.Listeners.BranchListener;
 import michal.edu.answers.Models.Section;
 import michal.edu.answers.Models.Store;
-import michal.edu.answers.Stores.StoreListener;
+import michal.edu.answers.Listeners.StoreListener;
 
 public class DataSource {
 

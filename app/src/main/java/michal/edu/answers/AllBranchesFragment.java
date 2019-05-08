@@ -1,11 +1,9 @@
-package michal.edu.answers.Branch;
+package michal.edu.answers;
 
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,20 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
-import michal.edu.answers.DataSource;
+import michal.edu.answers.Adapters.BranchAdapter;
+import michal.edu.answers.Listeners.BranchListener;
 import michal.edu.answers.Models.Branch;
-import michal.edu.answers.Models.Section;
-import michal.edu.answers.MyImageStorage;
-import michal.edu.answers.R;
 import michal.edu.answers.Models.Store;
-import michal.edu.answers.SectionListener;
 
 
 /**

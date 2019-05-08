@@ -1,4 +1,4 @@
-package michal.edu.answers.Branch;
+package michal.edu.answers.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;

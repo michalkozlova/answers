@@ -11,10 +11,8 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
-import michal.edu.answers.Feedbacks.MyFeedbackFragment;
-import michal.edu.answers.Stores.AllStoresFragment;
 import michal.edu.answers.Models.Store;
-import michal.edu.answers.Stores.StoreListener;
+import michal.edu.answers.Listeners.StoreListener;
 import michal.edu.answers.UserDetails.LoginFragment;
 
 public class MainActivity extends AppCompatActivity {

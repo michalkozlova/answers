@@ -1,4 +1,4 @@
-package michal.edu.answers.Feedbacks;
+package michal.edu.answers;
 
 
 import android.content.res.ColorStateList;

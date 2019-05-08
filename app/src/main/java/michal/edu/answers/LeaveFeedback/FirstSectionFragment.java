@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import michal.edu.answers.DataSource;
 import michal.edu.answers.Models.Section;
 import michal.edu.answers.Models.Store;
-import michal.edu.answers.QuestionAdapter;
+import michal.edu.answers.Adapters.QuestionAdapter;
 import michal.edu.answers.R;
-import michal.edu.answers.SectionListener;
+import michal.edu.answers.Listeners.SectionListener;
 
 /**
  * A simple {@link Fragment} subclass.
