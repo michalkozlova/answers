@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import michal.edu.answers.DataSource;
+import michal.edu.answers.MainActivity;
 import michal.edu.answers.Models.Store;
 import michal.edu.answers.R;
 
@@ -71,6 +72,11 @@ public class StartFeedbackFragment extends Fragment {
                         .commit();
             }
         });
+
+
+        View bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
+        bottomBar.clearAnimation();
+        bottomBar.animate().translationY(bottomBar.getHeight()).setDuration(400);
 
         return v;
     }

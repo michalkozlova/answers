@@ -68,7 +68,6 @@ public class FirstSectionFragment extends Fragment {
                 QuestionAdapter adapter = new QuestionAdapter(questionnaire.get(0).getQuestions(), getActivity());
                 rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
                 rvQuestions.setAdapter(adapter);
-
             }
         });
 
@@ -87,6 +86,7 @@ public class FirstSectionFragment extends Fragment {
                         .commit();
             }
         });
+
 
 
         return v;

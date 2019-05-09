@@ -1,6 +1,5 @@
 package michal.edu.answers.Adapters;
 
-import android.opengl.Visibility;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -32,7 +31,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     @Override
     public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(activity).inflate(R.layout.item_question, viewGroup, false);
-
         return new QuestionViewHolder(v);
     }
 
@@ -50,6 +48,21 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             questionViewHolder.ratingBar.setStepSize((float) 1.0);
             questionViewHolder.radioGroup.setVisibility(View.INVISIBLE);
         }
+
+        questionViewHolder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                System.out.println(rating);
+            }
+        });
+
+
+        questionViewHolder.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                System.out.println(checkedId);
+            }
+        });
     }
 
     @Override

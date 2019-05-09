@@ -80,6 +80,9 @@ public class AllStoresFragment extends Fragment {
         navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
 
 
+        View bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
+        //bottomBar.clearAnimation();
+        bottomBar.animate().translationY(0).setDuration(400);
 
         return v;
     }

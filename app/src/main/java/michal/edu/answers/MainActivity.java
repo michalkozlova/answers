@@ -76,4 +76,15 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
     }
+
+
+    public void hideBottomNavigationView(BottomNavigationView view) {
+        view.clearAnimation();
+        view.animate().translationY(view.getHeight()).setDuration(300);
+    }
+
+    public void showBottomNavigationView(BottomNavigationView view) {
+        view.clearAnimation();
+        view.animate().translationY(0).setDuration(300);
+    }
 }

@@ -1,6 +1,7 @@
 package michal.edu.answers;
 
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
@@ -14,6 +15,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Cache;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -133,7 +136,7 @@ public class DataSource {
         storageRef.child(store.getStoreName()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(context).load(uri).into(imageView);
+                Picasso.with(context).load(uri).networkPolicy(NetworkPolicy.OFFLINE).into(imageView);
                 firstLetter.setText("");
             }
         }).addOnFailureListener(new OnFailureListener() {
