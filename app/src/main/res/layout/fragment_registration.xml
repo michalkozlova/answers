@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
 
     <Spinner
-        android:id="@+id/spinnerDate"
+        android:id="@+id/spinnerExtention"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -111,7 +111,7 @@
         android:textColorHint="#FEDC32"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="@+id/etConfirmPassword"
-        app:layout_constraintStart_toEndOf="@+id/spinnerDate"
+        app:layout_constraintStart_toEndOf="@+id/spinnerExtention"
         app:layout_constraintTop_toBottomOf="@+id/etConfirmPassword" />
 
     <Button
@@ -127,7 +127,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/etNumber"
-        app:layout_constraintStart_toStartOf="@+id/spinnerDate"
+        app:layout_constraintStart_toStartOf="@+id/spinnerExtention"
         app:layout_constraintTop_toBottomOf="@+id/etNumber" />
 
 </android.support.constraint.ConstraintLayout>

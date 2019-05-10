@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,7 +43,7 @@ public class RegistrationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_registration, container, false);
 
-        phoneExtention = v.findViewById(R.id.spinnerDate);
+        phoneExtention = v.findViewById(R.id.spinnerExtention);
         etName = v.findViewById(R.id.etName);
         etPassword = v.findViewById(R.id.etPassword);
         etConfirmPassword = v.findViewById(R.id.etConfirmPassword);
@@ -59,17 +58,24 @@ public class RegistrationFragment extends Fragment {
         btnRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isNameValid() | !isPasswordValid() | !isPasswordConfirmed() | !isPhoneValid()){
+                if (!isNameValid() | !isPasswordValid() | !isPasswordConfirmed() | !isPhoneValid()) {
                     return;
                 }
 
                 showProgress(true);
 
-                Task<AuthResult> task = FirebaseAuth.getInstance().createUserWithEmailAndPassword(name() + "@" + number() + ".com", password());
+                Task<AuthResult> task = FirebaseAuth.getInstance().createUserWithEmailAndPassword(number() + "@" + number() + ".com", password());
                 task.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         System.out.println("DONE");
+                        showProgress(false);
+                        getActivity()
+                                .getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, new PersonalDetailsFragment())
+                                .disallowAddToBackStack()
+                                .commit();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -85,6 +91,22 @@ public class RegistrationFragment extends Fragment {
                 });
             }
         });
+
+//        btnRegistration.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!isNameValid() | !isPhoneValid() | !isPasswordConfirmed() | !isPhoneValid()){
+//                    return;
+//                }
+//
+//                PhoneAuthProvider.getInstance().verifyPhoneNumber(
+//                        number(),        // Phone number to verify
+//                        60,                 // Timeout duration
+//                        TimeUnit.SECONDS,   // Unit of timeout
+//                        this,               // Activity (for callback binding)
+//                        mCallbacks);        // OnVerificationStateChangedCallbacks
+//            }
+//        });
 
         return v;
     }
@@ -102,7 +124,10 @@ public class RegistrationFragment extends Fragment {
     }
 
     String number() {
-        return phoneExtention.getSelectedItem().toString() + etNumber.getText().toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append(phoneExtention.getSelectedItem().toString() + etNumber.getText().toString());
+        builder.deleteCharAt(0);
+        return "972" + builder;
     }
 
     private boolean isNameValid() {
@@ -142,7 +167,7 @@ public class RegistrationFragment extends Fragment {
         if(number().isEmpty()){
             etNumber.setError("Please put phone number");
             return false;
-        } else if (number().length() != 10){
+        } else if (number().length() != 12){
             System.out.println(number().length());
             etNumber.setError("Not correct number");
             return false;
