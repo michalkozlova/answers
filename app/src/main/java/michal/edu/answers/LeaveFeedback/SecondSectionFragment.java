@@ -33,6 +33,8 @@ public class SecondSectionFragment extends Fragment {
     private ImageView cardImage;
     private RecyclerView rvQuestions;
     private Button btnNext;
+    private Store thisStore;
+    private String thisBranchName;
 
     public static SecondSectionFragment newInstance(Store store, String branchName) {
 
@@ -50,6 +52,24 @@ public class SecondSectionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_section, container, false);
 
+        setInitialView(v);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, ThirdSectionFragment.newInstance(thisStore, thisBranchName))
+                        .disallowAddToBackStack()
+                        .commit();
+            }
+        });
+
+        return v;
+    }
+
+    private void setInitialView(View v){
         progressBar = v.findViewById(R.id.progressBar);
         tvTitleSecondSectionFeedback = v.findViewById(R.id.tvTitleSectionFeedback);
         cardImage = v.findViewById(R.id.cardImage);
@@ -57,9 +77,8 @@ public class SecondSectionFragment extends Fragment {
         rvQuestions = v.findViewById(R.id.rvQuestions);
         btnNext = v.findViewById(R.id.btnNext);
 
-
-        final Store thisStore = (Store) getArguments().getSerializable("store");
-        final String thisBranchName = (String) getArguments().getSerializable("branchName");
+        thisStore = (Store) getArguments().getSerializable("store");
+        thisBranchName = (String) getArguments().getSerializable("branchName");
 
         dataSource.getQuestionnaireFromFirebase(thisStore, new SectionListener() {
             @Override
@@ -76,20 +95,6 @@ public class SecondSectionFragment extends Fragment {
         dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
 
         progressBar.setProgress(3);
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, ThirdSectionFragment.newInstance(thisStore, thisBranchName))
-                        .disallowAddToBackStack()
-                        .commit();
-            }
-        });
-
-        return v;
     }
 
 }

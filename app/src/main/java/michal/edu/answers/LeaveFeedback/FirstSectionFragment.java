@@ -33,6 +33,8 @@ public class FirstSectionFragment extends Fragment {
     private ImageView cardImage;
     private RecyclerView rvQuestions;
     private Button btnNext;
+    private Store thisStore;
+    private String thisBranchName;
 
     public static FirstSectionFragment newInstance(Store store, String branchName) {
 
@@ -50,30 +52,7 @@ public class FirstSectionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_section, container, false);
 
-        progressBar = v.findViewById(R.id.progressBar);
-        tvTitleFirstSectionFeedback = v.findViewById(R.id.tvTitleSectionFeedback);
-        cardImage = v.findViewById(R.id.cardImage);
-        firstLetter = v.findViewById(R.id.firstLetter);
-        rvQuestions = v.findViewById(R.id.rvQuestions);
-        btnNext = v.findViewById(R.id.btnNext);
-
-        final Store thisStore = (Store) getArguments().getSerializable("store");
-        final String thisBranchName = (String) getArguments().getSerializable("branchName");
-
-        dataSource.getQuestionnaireFromFirebase(thisStore, new SectionListener() {
-            @Override
-            public void onSectionCallback(ArrayList<Section> questionnaire) {
-                tvTitleFirstSectionFeedback.setText("FEEDBACK: " + questionnaire.get(0).getSectionName());
-
-                QuestionAdapter adapter = new QuestionAdapter(questionnaire.get(0).getQuestions(), getActivity());
-                rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
-                rvQuestions.setAdapter(adapter);
-            }
-        });
-
-        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
-
-        progressBar.setProgress(2);
+        setInitialView(v);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +69,33 @@ public class FirstSectionFragment extends Fragment {
 
 
         return v;
+    }
+
+    private void setInitialView(View v){
+        progressBar = v.findViewById(R.id.progressBar);
+        tvTitleFirstSectionFeedback = v.findViewById(R.id.tvTitleSectionFeedback);
+        cardImage = v.findViewById(R.id.cardImage);
+        firstLetter = v.findViewById(R.id.firstLetter);
+        rvQuestions = v.findViewById(R.id.rvQuestions);
+        btnNext = v.findViewById(R.id.btnNext);
+
+        thisStore = (Store) getArguments().getSerializable("store");
+        thisBranchName = (String) getArguments().getSerializable("branchName");
+
+        dataSource.getQuestionnaireFromFirebase(thisStore, new SectionListener() {
+            @Override
+            public void onSectionCallback(ArrayList<Section> questionnaire) {
+                tvTitleFirstSectionFeedback.setText("FEEDBACK: " + questionnaire.get(0).getSectionName());
+
+                QuestionAdapter adapter = new QuestionAdapter(questionnaire.get(0).getQuestions(), getActivity());
+                rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
+                rvQuestions.setAdapter(adapter);
+            }
+        });
+
+        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
+
+        progressBar.setProgress(2);
     }
 
 }

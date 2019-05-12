@@ -44,6 +44,56 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
+        setInitialView(v);
+
+        btnRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToRegistrationForm();
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+
+        return v;
+    }
+
+    private void signIn() {
+        if (!isPhoneValid() | !isPasswordValid()){
+            return;
+        }
+
+        showProgress(true);
+        Task<AuthResult> task = FirebaseAuth.getInstance().signInWithEmailAndPassword(number() + "@" + number() + ".com", password());
+        task.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                showProgress(false);
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, new PersonalDetailsFragment())
+                        .disallowAddToBackStack()
+                        .commit();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println("not signed in");
+            }
+        });
+    }
+
+    private void goToRegistrationForm() {
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.container, new RegistrationFragment()).commit();
+    }
+
+    private void setInitialView(View v){
         btnRegistration = v.findViewById(R.id.btnRegistration);
         btnLogin = v.findViewById(R.id.btnLogin);
         spinnerExtention = v.findViewById(R.id.spinnerExtention);
@@ -57,55 +107,16 @@ public class LoginFragment extends Fragment {
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffEA4C5F"));
         BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
         navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ff4954F7")));
-
-
-        btnRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("").replace(R.id.container, new RegistrationFragment()).commit();
-            }
-        });
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isPhoneValid() | !isPasswordValid()){
-                    return;
-                }
-
-                showProgress(true);
-                Task<AuthResult> task = FirebaseAuth.getInstance().signInWithEmailAndPassword(number() + "@" + number() + ".com", password());
-                task.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        showProgress(false);
-                        getActivity()
-                                .getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.container, new PersonalDetailsFragment())
-                                .disallowAddToBackStack()
-                                .commit();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println("not signed in");
-                    }
-                });
-            }
-        });
-
-        return v;
     }
 
-    String number() {
+    private String number() {
         StringBuilder builder = new StringBuilder();
         builder.append(spinnerExtention.getSelectedItem().toString() + etPhoneNumber.getText().toString());
         builder.deleteCharAt(0);
         return "972" + builder;
     }
 
-    String password(){return etPassword.getText().toString();}
+    private String password(){return etPassword.getText().toString();}
 
 
     private boolean isPhoneValid(){

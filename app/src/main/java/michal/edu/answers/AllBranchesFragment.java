@@ -27,11 +27,12 @@ import michal.edu.answers.Models.Store;
  */
 public class AllBranchesFragment extends Fragment {
 
+    private DataSource dataSource = DataSource.getInstance();
     private RecyclerView rvBranches;
     private BranchAdapter adapter;
     private TextView tvBranches, firstLetter;
     private ImageView cardImage;
-    private DataSource dataSource = DataSource.getInstance();
+    private Store thisStore;
 
     public static AllBranchesFragment newInstance(Store store) {
 
@@ -48,15 +49,7 @@ public class AllBranchesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_all_branches, container, false);
 
-        rvBranches = v.findViewById(R.id.rvBranches);
-        tvBranches = v.findViewById(R.id.tvBranches);
-        firstLetter = v.findViewById(R.id.firstLetter);
-        cardImage = v.findViewById(R.id.cardImage);
-
-        final Store thisStore = (Store) getArguments().getSerializable("store");
-
-        tvBranches.setText("BRANCHES: " + thisStore.getStoreName());
-        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
+        setInitialView(v);
 
         dataSource.getBranchesFromFirebase(thisStore, new BranchListener() {
             @Override
@@ -67,6 +60,20 @@ public class AllBranchesFragment extends Fragment {
             }
         });
 
+        return v;
+    }
+
+    private void setInitialView(View v){
+        rvBranches = v.findViewById(R.id.rvBranches);
+        tvBranches = v.findViewById(R.id.tvBranches);
+        firstLetter = v.findViewById(R.id.firstLetter);
+        cardImage = v.findViewById(R.id.cardImage);
+
+        thisStore = (Store) getArguments().getSerializable("store");
+
+        tvBranches.setText("BRANCHES: " + thisStore.getStoreName());
+        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
+
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffFEDC32"));
         BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
         navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffEA4C5F")));
@@ -75,8 +82,6 @@ public class AllBranchesFragment extends Fragment {
         View bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
         //bottomBar.clearAnimation();
         bottomBar.animate().translationY(0).setDuration(400);
-
-        return v;
     }
 
 }

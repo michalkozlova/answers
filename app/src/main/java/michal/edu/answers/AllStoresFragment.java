@@ -42,8 +42,8 @@ public class AllStoresFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_all_stores, container, false);
-        gvStores = v.findViewById(R.id.gvStores);
-        tablayout = v.findViewById(R.id.tablayout);
+
+        setInitialView(v);
 
         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -71,6 +71,14 @@ public class AllStoresFragment extends Fragment {
             }
         });
 
+        return v;
+    }
+
+
+    private void setInitialView(View v){
+        gvStores = v.findViewById(R.id.gvStores);
+        tablayout = v.findViewById(R.id.tablayout);
+
         getAllLists();
         adapter = new StoreAdapter(allStores, getActivity());
         gvStores.setAdapter(adapter);
@@ -79,14 +87,10 @@ public class AllStoresFragment extends Fragment {
         BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
         navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
 
-
         View bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
         //bottomBar.clearAnimation();
         bottomBar.animate().translationY(0).setDuration(400);
-
-        return v;
     }
-
 
     private void getAllLists(){
         allStores = (ArrayList<Store>) getArguments().getSerializable("stores");

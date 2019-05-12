@@ -28,6 +28,9 @@ public class StartFeedbackFragment extends Fragment {
     private TextView firstLetter, tvStoreNameBranchName;
     private Button btnNext;
     private Spinner spinnerMonth;
+    private View bottomBar;
+    private Store thisStore;
+    private String thisBranchName;
 
     public static StartFeedbackFragment newInstance(Store store, String branchName) {
 
@@ -45,21 +48,7 @@ public class StartFeedbackFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_start_feedback, container, false);
 
-        spinnerMonth = v.findViewById(R.id.spinnerMonth);
-        cardImage = v.findViewById(R.id.cardImage);
-        firstLetter = v.findViewById(R.id.firstLetter);
-        tvStoreNameBranchName = v.findViewById(R.id.tvStoreNameBranchName);
-        btnNext = v.findViewById(R.id.btnNext);
-
-        final Store thisStore = (Store) getArguments().getSerializable("store");
-        final String thisBranchName = (String) getArguments().getSerializable("branchName");
-
-        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
-        tvStoreNameBranchName.setText(thisStore.getStoreName() + " / " + thisBranchName);
-
-        ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(getContext(), R.array.months, android.R.layout.simple_spinner_dropdown_item);
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMonth.setAdapter(monthAdapter);
+        setInitialView(v);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,12 +62,29 @@ public class StartFeedbackFragment extends Fragment {
             }
         });
 
+        return v;
+    }
 
-        View bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
+    private void setInitialView(View v){
+        spinnerMonth = v.findViewById(R.id.spinnerMonth);
+        cardImage = v.findViewById(R.id.cardImage);
+        firstLetter = v.findViewById(R.id.firstLetter);
+        tvStoreNameBranchName = v.findViewById(R.id.tvStoreNameBranchName);
+        btnNext = v.findViewById(R.id.btnNext);
+        bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
+
+        thisStore = (Store) getArguments().getSerializable("store");
+        thisBranchName = (String) getArguments().getSerializable("branchName");
+
+        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
+        tvStoreNameBranchName.setText(thisStore.getStoreName() + " / " + thisBranchName);
+
+        ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(getContext(), R.array.months, android.R.layout.simple_spinner_dropdown_item);
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMonth.setAdapter(monthAdapter);
+
         bottomBar.clearAnimation();
         bottomBar.animate().translationY(bottomBar.getHeight()).setDuration(400);
-
-        return v;
     }
 
 }

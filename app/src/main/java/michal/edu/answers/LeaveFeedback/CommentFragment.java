@@ -30,6 +30,12 @@ public class CommentFragment extends Fragment {
     private TextView firstLetter;
     private ImageView cardImage;
     private Button btnDone;
+    private Store thisStore;
+    private String thisBranchName;
+
+    public CommentFragment() {
+    }
+
 
     public static CommentFragment newInstance(Store store, String branchName) {
 
@@ -47,17 +53,7 @@ public class CommentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_comment, container, false);
 
-        progressBar = v.findViewById(R.id.progressBar);
-        firstLetter = v.findViewById(R.id.firstLetter);
-        cardImage = v.findViewById(R.id.cardImage);
-        btnDone = v.findViewById(R.id.btnDone);
-
-        final Store thisStore = (Store) getArguments().getSerializable("store");
-        final String thisBranchName = (String) getArguments().getSerializable("branchName");
-
-        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
-
-        progressBar.setProgress(5);
+        setInitialView(v);
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +69,20 @@ public class CommentFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private void setInitialView(View v){
+        progressBar = v.findViewById(R.id.progressBar);
+        firstLetter = v.findViewById(R.id.firstLetter);
+        cardImage = v.findViewById(R.id.cardImage);
+        btnDone = v.findViewById(R.id.btnDone);
+
+        thisStore = (Store) getArguments().getSerializable("store");
+        thisBranchName = (String) getArguments().getSerializable("branchName");
+
+        dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
+
+        progressBar.setProgress(5);
     }
 
 
