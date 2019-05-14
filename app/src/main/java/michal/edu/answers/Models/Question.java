@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class Question implements Serializable {
 
-    private String questionText;
-    private int questionType;
-
     public static final int YES_NO = 0;
     public static final int ONE_FIVE = 1;
+
+    private String questionText;
+    private int questionType;
 
     public Question() {
     }

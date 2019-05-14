@@ -68,13 +68,6 @@ public class MainActivity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.all_stores);
         navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
 
-
-        dataSource.getStoresFromFirebase(new StoreListener() {
-                        @Override
-                        public void onStoreCallBack(ArrayList<Store> stores) {
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, AllStoresFragment.newInstance(stores)).commit();
-                        }
-                    });
     }
 
     private void checkIfLoggedIn(){

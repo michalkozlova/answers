@@ -113,8 +113,8 @@ public class RegistrationFragment extends Fragment {
         etNumber = v.findViewById(R.id.etNumber);
         btnRegistration = v.findViewById(R.id.btnRegistration);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.phone_extentions, R.layout.phone_spinner_item);
-        adapter.setDropDownViewResource(R.layout.phone_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.phone_extentions, R.layout.spinner_item_phone);
+        adapter.setDropDownViewResource(R.layout.spinner_item_phone);
         phoneExtention.setAdapter(adapter);
     }
 

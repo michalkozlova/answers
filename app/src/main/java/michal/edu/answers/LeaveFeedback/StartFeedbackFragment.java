@@ -64,11 +64,16 @@ public class StartFeedbackFragment extends Fragment {
         setInitialView(v);
 
         getTime();
-        changeTime();
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isHourValid()){
+                    return;
+                }else {
+                    timeChanged();
+                }
+
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
@@ -98,8 +103,8 @@ public class StartFeedbackFragment extends Fragment {
         dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
         tvStoreNameBranchName.setText(thisStore.getStoreName() + " / " + thisBranchName);
 
-        ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(getContext(), R.array.months, android.R.layout.simple_spinner_dropdown_item);
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(getContext(), R.array.months, R.layout.spinner_item_month);
+        monthAdapter.setDropDownViewResource(R.layout.spinner_item_month);
         spinnerMonth.setAdapter(monthAdapter);
 
         bottomBar.clearAnimation();
@@ -107,24 +112,31 @@ public class StartFeedbackFragment extends Fragment {
 
     }
 
+    private String hour(){
+        return etHour.getText().toString();
+    }
+    private String min(){
+        return etMin.getText().toString();
+    }
+    private String day(){
+        return etDate.getText().toString();
+    }
+
     private void getTime(){
         timestamp = System.currentTimeMillis();
         System.out.println(timestamp);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("kk:mm dd/MM/yyyy");
         String fullTime = formatter.format(new Date(timestamp));
         System.out.println(fullTime);
 
         String hour = fullTime.substring(0, 2);
-        System.out.println("Hours: " + hour);
         etHour.setText(hour);
 
         String min = fullTime.substring(3, 5);
-        System.out.println(min);
         etMin.setText(min);
 
         String day = fullTime.substring(6, 8);
-        System.out.println(day);
         etDate.setText(day);
 
         String months = fullTime.substring(9, 11);
@@ -132,20 +144,32 @@ public class StartFeedbackFragment extends Fragment {
         spinnerMonth.setSelection(mon-1);
     }
 
-    private void changeTime(){
-        String day = etDate.getText().toString();
+    private long timeChanged(){
+        System.out.println(timestamp + " before time was changed");
         long month = spinnerMonth.getSelectedItemId() + 1;
-        String hour = etHour.getText().toString();
-        String min = etMin.getText().toString();
-        System.out.println("change time: " + month);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm dd/MM/yyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("kk:mm dd/MM/yyy");
         try {
-            Date mDate = dateFormat.parse(hour + ":" + min + " " + day + "/" + month + "/2019");
+            Date mDate = formatter.parse(hour() + ":" + min() + " " + day() + "/" + month + "/2019");
             timestamp = mDate.getTime();
-            System.out.println(timestamp);
+            System.out.println(timestamp + " after time was changed");
+            String newFullTime = formatter.format(new Date(timestamp));
+            System.out.println(newFullTime);
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+
+        return timestamp;
+    }
+
+    private boolean isHourValid() {
+        int x = Integer.valueOf(hour());
+
+        if (x < 0 || x > 24){
+            etHour.setError("Hour is not correct");
+            return false;
+        } else {
+            return true;
         }
     }
 

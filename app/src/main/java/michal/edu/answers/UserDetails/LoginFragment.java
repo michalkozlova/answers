@@ -2,7 +2,6 @@ package michal.edu.answers.UserDetails;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -100,8 +99,8 @@ public class LoginFragment extends Fragment {
         etPhoneNumber = v.findViewById(R.id.etPhoneNumber);
         etPassword = v.findViewById(R.id.etPassword);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.phone_extentions, R.layout.phone_spinner_item);
-        adapter.setDropDownViewResource(R.layout.phone_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.phone_extentions, R.layout.spinner_item_phone);
+        adapter.setDropDownViewResource(R.layout.spinner_item_phone);
         spinnerExtention.setAdapter(adapter);
 
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffEA4C5F"));
