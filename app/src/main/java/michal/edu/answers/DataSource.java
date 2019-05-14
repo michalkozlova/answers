@@ -56,6 +56,7 @@ public class DataSource {
                     System.out.println("no stores");
                 } else {
                     callback.onStoreCallBack(mStores);
+                    System.out.println(mStores);
                 }
             }
 
@@ -71,7 +72,7 @@ public class DataSource {
 
 
     public ArrayList<Branch> getBranchesFromFirebase(Store store, final BranchListener callback){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(store.getStoreID()).child("Branches");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(store.getStoreID()).child("branches");
         final ArrayList<Branch> mBranches = new ArrayList<>();
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -136,7 +137,7 @@ public class DataSource {
         storageRef.child(store.getStoreName()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(context).load(uri).networkPolicy(NetworkPolicy.OFFLINE).into(imageView);
+                Picasso.with(context).load(uri).into(imageView);
                 firstLetter.setText("");
             }
         }).addOnFailureListener(new OnFailureListener() {
