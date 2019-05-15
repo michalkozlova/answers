@@ -22,10 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:progressBackgroundTint="#FFF"
-        android:progressTint="@color/pink"
+        android:isIndicator="false"
+        android:numStars="5"
+        android:progressBackgroundTint="#fff"
+        android:scaleX="0.75"
+        android:scaleY="0.75"
+        android:stepSize="1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvQuestionText" />
@@ -35,14 +39,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ratingBar">
+        app:layout_constraintTop_toBottomOf="@+id/tvQuestionText">
 
         <RadioButton
             android:id="@+id/rbYes"
@@ -54,7 +57,7 @@
             android:layout_marginBottom="8dp"
             android:buttonTint="@color/pink"
             android:text="Yes"
-            android:textSize="24sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -69,7 +72,7 @@
             android:layout_marginBottom="8dp"
             android:buttonTint="@color/pink"
             android:text="No"
-            android:textSize="24sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

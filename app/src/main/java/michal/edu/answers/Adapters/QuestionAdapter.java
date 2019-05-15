@@ -44,15 +44,15 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         if (question.getQuestionType() == 0) {
             questionViewHolder.ratingBar.setVisibility(View.INVISIBLE);
         }else {
-            questionViewHolder.ratingBar.setNumStars(5);
-            questionViewHolder.ratingBar.setStepSize((float) 1.0);
             questionViewHolder.radioGroup.setVisibility(View.INVISIBLE);
+            System.out.println(questionViewHolder.ratingBar.getRating());
+            //questionViewHolder.ratingBar.setNumStars(5);
         }
 
         questionViewHolder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                System.out.println(rating);
+                System.out.println("rating" + rating);
             }
         });
 
@@ -60,7 +60,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         questionViewHolder.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                System.out.println(checkedId);
+                System.out.println("rating" + checkedId);
             }
         });
     }
@@ -80,7 +80,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             super(itemView);
 
             tvQuestionText = itemView.findViewById(R.id.tvQuestionText);
-            ratingBar = itemView.findViewById(R.id.ratingBar);
+            ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
             radioGroup = itemView.findViewById(R.id.radioGroup);
         }
     }

@@ -10,21 +10,19 @@ public class Store implements Serializable {
 
     private String storeName;
     private Integer storeType;
-    private String email;
     private String storeID;
-//    private ArrayList<Branch> branches;
-//    private ArrayList<Section> questionnaire;
+    private ArrayList<Branch> branches;
+    private ArrayList<Section> questionnaire;
 
     public Store() {
     }
 
-    public Store(String storeName, Integer storeType, String email, String storeID/*, ArrayList<Branch> branches, ArrayList<Section> questionnaire*/) {
+    public Store(String storeName, Integer storeType, String storeID, ArrayList<Branch> branches, ArrayList<Section> questionnaire) {
         this.storeName = storeName;
         this.storeType = storeType;
-        this.email = email;
         this.storeID = storeID;
-//        this.branches = branches;
-//        this.questionnaire = questionnaire;
+        this.branches = branches;
+        this.questionnaire = questionnaire;
     }
 
     public String getStoreName() {
@@ -43,14 +41,6 @@ public class Store implements Serializable {
         this.storeType = storeType;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getStoreID() {
         return storeID;
     }
@@ -59,31 +49,30 @@ public class Store implements Serializable {
         this.storeID = storeID;
     }
 
-//    public ArrayList<Branch> getBranches() {
-//        return branches;
-//    }
-//
-//    public void setBranches(ArrayList<Branch> branches) {
-//        this.branches = branches;
-//    }
-//
-//    public ArrayList<Section> getQuestionnaire() {
-//        return questionnaire;
-//    }
-//
-//    public void setQuestionnaire(ArrayList<Section> questionnaire) {
-//        this.questionnaire = questionnaire;
-//    }
+    public ArrayList<Branch> getBranches() {
+        return branches;
+    }
+
+    public void setBranches(ArrayList<Branch> branches) {
+        this.branches = branches;
+    }
+
+    public ArrayList<Section> getQuestionnaire() {
+        return questionnaire;
+    }
+
+    public void setQuestionnaire(ArrayList<Section> questionnaire) {
+        this.questionnaire = questionnaire;
+    }
 
     @Override
     public String toString() {
         return "Store{" +
                 "storeName='" + storeName + '\'' +
                 ", storeType=" + storeType +
-                ", email='" + email + '\'' +
                 ", storeID='" + storeID + '\'' +
-//                ", branches=" + branches +
-//                ", questionnaire=" + questionnaire +
+                ", branches=" + branches +
+                ", questionnaire=" + questionnaire +
                 '}';
     }
 }

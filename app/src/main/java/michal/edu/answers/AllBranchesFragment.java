@@ -15,10 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import michal.edu.answers.Adapters.BranchAdapter;
 import michal.edu.answers.Listeners.BranchListener;
+import michal.edu.answers.Listeners.SectionListener;
 import michal.edu.answers.Models.Branch;
+import michal.edu.answers.Models.Section;
 import michal.edu.answers.Models.Store;
 
 
@@ -51,14 +55,27 @@ public class AllBranchesFragment extends Fragment {
 
         setInitialView(v);
 
-        dataSource.getBranchesFromFirebase(thisStore, new BranchListener() {
+//        dataSource.getBranchesFromFirebase(thisStore, new BranchListener() {
+//            @Override
+//            public void onBranchCallback(ArrayList<Branch> branches) {
+//                adapter = new BranchAdapter(thisStore, branches, getActivity());
+//                rvBranches.setLayoutManager(new LinearLayoutManager(getContext()));
+//                rvBranches.setAdapter(adapter);
+//            }
+//        });
+
+
+        //sort branches with ABC
+        Collections.sort(thisStore.getBranches(), new Comparator<Branch>() {
             @Override
-            public void onBranchCallback(ArrayList<Branch> branches) {
-                adapter = new BranchAdapter(thisStore, branches, getActivity());
-                rvBranches.setLayoutManager(new LinearLayoutManager(getContext()));
-                rvBranches.setAdapter(adapter);
+            public int compare(Branch o1, Branch o2) {
+                return o1.getBranchName().compareTo(o2.getBranchName());
             }
         });
+
+        adapter = new BranchAdapter(thisStore, thisStore.getBranches(), getActivity());
+        rvBranches.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvBranches.setAdapter(adapter);
 
         return v;
     }

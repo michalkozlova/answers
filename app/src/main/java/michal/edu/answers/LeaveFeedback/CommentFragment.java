@@ -4,6 +4,7 @@ package michal.edu.answers.LeaveFeedback;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.google.android.gms.dynamic.SupportFragmentWrapper;
 
 import java.util.ArrayList;
 
@@ -32,9 +35,7 @@ public class CommentFragment extends Fragment {
     private Button btnDone;
     private Store thisStore;
     private String thisBranchName;
-
-    public CommentFragment() {
-    }
+    private FragmentManager manager;
 
 
     public static CommentFragment newInstance(Store store, String branchName) {
@@ -62,7 +63,7 @@ public class CommentFragment extends Fragment {
                 dataSource.getStoresFromFirebase(new StoreListener() {
                     @Override
                     public void onStoreCallBack(ArrayList<Store> stores) {
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, AllStoresFragment.newInstance(stores)).commit();
+                        manager.beginTransaction().replace(R.id.container, AllStoresFragment.newInstance(stores)).commit();
                     }
                 });
             }
@@ -76,6 +77,8 @@ public class CommentFragment extends Fragment {
         firstLetter = v.findViewById(R.id.firstLetter);
         cardImage = v.findViewById(R.id.cardImage);
         btnDone = v.findViewById(R.id.btnDone);
+
+        manager = getFragmentManager();
 
         thisStore = (Store) getArguments().getSerializable("store");
         thisBranchName = (String) getArguments().getSerializable("branchName");

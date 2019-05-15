@@ -70,65 +70,64 @@ public class DataSource {
     }
 
 
+//    public ArrayList<Branch> getBranchesFromFirebase(Store store, final BranchListener callback){
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(store.getStoreID()).child("branches");
+//        final ArrayList<Branch> mBranches = new ArrayList<>();
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    Branch value = snapshot.getValue(Branch.class);
+//                    mBranches.add(value);
+//                }
+//
+//                if (mBranches.isEmpty()){
+//                    System.out.println("no branches");
+//                }else {
+//                    callback.onBranchCallback(mBranches);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        return mBranches;
+//    }
 
-    public ArrayList<Branch> getBranchesFromFirebase(Store store, final BranchListener callback){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(store.getStoreID()).child("branches");
-        final ArrayList<Branch> mBranches = new ArrayList<>();
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Branch value = snapshot.getValue(Branch.class);
-                    mBranches.add(value);
-                }
 
-                if (mBranches.isEmpty()){
-                    System.out.println("no branches");
-                }else {
-                    callback.onBranchCallback(mBranches);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return mBranches;
-    }
-
-
-    public ArrayList<Section> getQuestionnaireFromFirebase(final Store store, final SectionListener callback){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(store.getStoreID()).child("questionnaire");
-        final ArrayList<Section> mQuestionnaire = new ArrayList<>();
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    final Section value = snapshot.getValue(Section.class);
-                    //TODO: WTF??!!
-                    value.getQuestions().remove(0);
-                    mQuestionnaire.add(value);
-                }
-
-                if(mQuestionnaire.isEmpty()){
-                    System.out.println("no questionnaire");
-                }else{
-                    callback.onSectionCallback(mQuestionnaire);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return mQuestionnaire;
-    }
-
+//    public ArrayList<Section> getQuestionnaireFromFirebase(final Store store, final SectionListener callback){
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(store.getStoreID()).child("questionnaire");
+//        final ArrayList<Section> mQuestionnaire = new ArrayList<>();
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    final Section value = snapshot.getValue(Section.class);
+//                    //TODO: WTF??!!
+//                    value.getQuestions().remove(0);
+//                    mQuestionnaire.add(value);
+//                }
+//
+//                if(mQuestionnaire.isEmpty()){
+//                    System.out.println("no questionnaire");
+//                }else{
+//                    callback.onSectionCallback(mQuestionnaire);
+//                    System.out.println(mQuestionnaire);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        return mQuestionnaire;
+//    }
 
 
     public void setStoreLogo(final Store store, final ImageView imageView, final TextView firstLetter, final Context context){

@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 
 import java.sql.Timestamp;
@@ -64,6 +66,8 @@ public class StartFeedbackFragment extends Fragment {
         setInitialView(v);
 
         getTime();
+
+        offlineDataBase();
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,6 +175,11 @@ public class StartFeedbackFragment extends Fragment {
         } else {
             return true;
         }
+    }
+
+    private void offlineDataBase(){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myReference = database.getReference();
     }
 
 }

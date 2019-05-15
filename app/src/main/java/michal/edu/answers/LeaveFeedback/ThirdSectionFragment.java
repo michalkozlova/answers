@@ -80,17 +80,23 @@ public class ThirdSectionFragment extends Fragment {
         thisStore = (Store) getArguments().getSerializable("store");
         thisBranchName = (String) getArguments().getSerializable("branchName");
 
-        dataSource.getQuestionnaireFromFirebase(thisStore, new SectionListener() {
-            @Override
-            public void onSectionCallback(ArrayList<Section> questionnaire) {
-                tvTitleThirdSectionFeedback.setText("FEEDBACK: " + questionnaire.get(2).getSectionName());
+//        dataSource.getQuestionnaireFromFirebase(thisStore, new SectionListener() {
+//            @Override
+//            public void onSectionCallback(ArrayList<Section> questionnaire) {
+//                tvTitleThirdSectionFeedback.setText("FEEDBACK: " + questionnaire.get(2).getSectionName());
+//
+//                QuestionAdapter adapter = new QuestionAdapter(questionnaire.get(2).getQuestions(), getActivity());
+//                rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
+//                rvQuestions.setAdapter(adapter);
+//
+//            }
+//        });
 
-                QuestionAdapter adapter = new QuestionAdapter(questionnaire.get(2).getQuestions(), getActivity());
-                rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
-                rvQuestions.setAdapter(adapter);
+        tvTitleThirdSectionFeedback.setText("FEEDBACK: " + thisStore.getQuestionnaire().get(2).getSectionName());
 
-            }
-        });
+        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(2).getQuestions(), getActivity());
+        rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvQuestions.setAdapter(adapter);
 
         dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
 
