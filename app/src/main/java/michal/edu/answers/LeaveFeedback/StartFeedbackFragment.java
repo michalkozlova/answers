@@ -200,7 +200,7 @@ public class StartFeedbackFragment extends Fragment {
         editor.putString("storeID", thisStore.getStoreID());
         editor.putString("branchName", thisBranchName);
         editor.putLong("timestamp", timestamp);
-        editor.commit();
+        editor.apply();
     }
 
 }

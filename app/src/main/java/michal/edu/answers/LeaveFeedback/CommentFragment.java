@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import michal.edu.answers.AllStoresFragment;
 import michal.edu.answers.DataSource;
 import michal.edu.answers.Listeners.StoreListener;
+import michal.edu.answers.Models.Answer;
 import michal.edu.answers.Models.Feedback;
+import michal.edu.answers.Models.SectionAnswer;
 import michal.edu.answers.Models.Store;
 import michal.edu.answers.R;
 
@@ -71,6 +73,8 @@ public class CommentFragment extends Fragment {
 
                 readDataFromSharedPref();
 
+                deleteDataFromSharedPref();
+
                 dataSource.getStoresFromFirebase(new StoreListener() {
                     @Override
                     public void onStoreCallBack(ArrayList<Store> stores) {
@@ -114,7 +118,26 @@ public class CommentFragment extends Fragment {
         String storeID = sharedPref.getString("storeID", "storeID");
         String branchName = sharedPref.getString("branchName", "branchName");
         long timestamp = sharedPref.getLong("timestamp", 000000);
-        Feedback feedback = new Feedback(customerID, storeID, branchName, timestamp, "new comment", null);
+
+        ArrayList<SectionAnswer> sectionAnswers = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+
+            SectionAnswer sectionAnswer = new SectionAnswer();
+            sectionAnswer.setSectionName(thisStore.getQuestionnaire().get(i).getSectionName());
+            ArrayList<Answer> answers = new ArrayList<>();
+            int x = thisStore.getQuestionnaire().get(i).getQuestions().size();
+            for (int j = 0; j < x; j++) {
+                Float answerValue = sharedPref.getFloat(i + "" + j, (float) 0.0);
+                Answer answer = new Answer(i + "" + j, answerValue);
+                answers.add(answer);
+            }
+            sectionAnswer.setAnswers(answers);
+
+            sectionAnswers.add(sectionAnswer);
+        }
+
+        Feedback feedback = new Feedback(customerID, storeID, branchName, timestamp, "new comment", sectionAnswers);
         System.out.println(feedback);
 
     }
@@ -122,7 +145,7 @@ public class CommentFragment extends Fragment {
     private void deleteDataFromSharedPref(){
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 
 }

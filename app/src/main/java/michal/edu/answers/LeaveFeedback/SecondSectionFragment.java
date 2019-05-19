@@ -1,6 +1,8 @@
 package michal.edu.answers.LeaveFeedback;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +37,7 @@ public class SecondSectionFragment extends Fragment {
     private Button btnNext;
     private Store thisStore;
     private String thisBranchName;
+    private SharedPreferences sharedPref;
 
     public static SecondSectionFragment newInstance(Store store, String branchName) {
 
@@ -80,6 +83,8 @@ public class SecondSectionFragment extends Fragment {
         thisStore = (Store) getArguments().getSerializable("store");
         thisBranchName = (String) getArguments().getSerializable("branchName");
 
+        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+
 //        dataSource.getQuestionnaireFromFirebase(thisStore, new SectionListener() {
 //            @Override
 //            public void onSectionCallback(ArrayList<Section> questionnaire) {
@@ -94,7 +99,7 @@ public class SecondSectionFragment extends Fragment {
 
         tvTitleSecondSectionFeedback.setText("FEEDBACK: " + thisStore.getQuestionnaire().get(1).getSectionName());
 
-        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(1).getQuestions(), getActivity(), 1);
+        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(1).getQuestions(), getActivity(), 1, sharedPref);
         rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
         rvQuestions.setAdapter(adapter);
 

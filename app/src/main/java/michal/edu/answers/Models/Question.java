@@ -8,8 +8,8 @@ public class Question implements Serializable {
     public static final int ONE_FIVE = 1;
 
     private String questionText;
-    private int questionType;
     private String questionID;
+    private int questionType;
 
     public Question() {
     }

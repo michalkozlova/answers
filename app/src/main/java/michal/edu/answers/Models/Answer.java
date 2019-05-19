@@ -4,26 +4,26 @@ import java.io.Serializable;
 
 public class Answer implements Serializable {
 
-    private String questionText;
-    private int answerValue;
-
-    public Answer(String questionText, int answerValue) {
-        this.questionText = questionText;
-        this.answerValue = answerValue;
-    }
+    private String questionID;
+    private float answerValue;
 
     public Answer() {
     }
 
-    public String getQuestionText() {
-        return questionText;
+    public Answer(String questionID, float answerValue) {
+        this.questionID = questionID;
+        this.answerValue = answerValue;
     }
 
-    public void setQuestionText(String questionText) {
-        this.questionText = questionText;
+    public String getQuestionID() {
+        return questionID;
     }
 
-    public int getAnswerValue() {
+    public void setQuestionID(String questionID) {
+        this.questionID = questionID;
+    }
+
+    public float getAnswerValue() {
         return answerValue;
     }
 
@@ -34,7 +34,7 @@ public class Answer implements Serializable {
     @Override
     public String toString() {
         return "Answer{" +
-                "questionText='" + questionText + '\'' +
+                "questionID='" + questionID + '\'' +
                 ", answerValue=" + answerValue +
                 '}';
     }

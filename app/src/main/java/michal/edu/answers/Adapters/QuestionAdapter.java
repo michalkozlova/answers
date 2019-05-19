@@ -1,5 +1,6 @@
 package michal.edu.answers.Adapters;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -22,11 +23,13 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     private List<Question> questionList;
     private FragmentActivity activity;
     private int sectionID;
+    private SharedPreferences sharedPref;
 
-    public QuestionAdapter(List<Question> questionList, FragmentActivity activity, int sectionID) {
+    public QuestionAdapter(List<Question> questionList, FragmentActivity activity, int sectionID, SharedPreferences sharedPref) {
         this.questionList = questionList;
         this.activity = activity;
         this.sectionID = sectionID;
+        this.sharedPref = sharedPref;
     }
 
     @NonNull
@@ -39,7 +42,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder questionViewHolder, int i) {
-        Question question = questionList.get(i);
+        final Question question = questionList.get(i);
 
         questionViewHolder.tvQuestionText.setText(question.getQuestionText());
 
@@ -47,13 +50,15 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             questionViewHolder.ratingBar.setVisibility(View.INVISIBLE);
         }else {
             questionViewHolder.radioGroup.setVisibility(View.INVISIBLE);
-            System.out.println(questionViewHolder.ratingBar.getRating());
             //questionViewHolder.ratingBar.setNumStars(5);
         }
 
         questionViewHolder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putFloat(question.getQuestionID(), rating);
+                editor.apply();
                 System.out.println("rating" + rating);
             }
         });
@@ -62,7 +67,10 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         questionViewHolder.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                System.out.println("rating" + checkedId);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putFloat(question.getQuestionID(), checkedId);
+                editor.apply();
+                System.out.println("checkedId" + checkedId);
             }
         });
     }
