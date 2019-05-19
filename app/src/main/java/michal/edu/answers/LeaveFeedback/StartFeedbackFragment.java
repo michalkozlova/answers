@@ -1,6 +1,8 @@
 package michal.edu.answers.LeaveFeedback;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
@@ -36,6 +39,8 @@ import michal.edu.answers.R;
  */
 public class StartFeedbackFragment extends Fragment {
 
+    private final static String PREFERENCE_FILE = "michal.edu.answers.PREFERENCE_FILE_KEY";
+
     private DataSource dataSource = DataSource.getInstance();
     private ImageView cardImage;
     private TextView firstLetter, tvStoreNameBranchName;
@@ -46,6 +51,8 @@ public class StartFeedbackFragment extends Fragment {
     private Store thisStore;
     private String thisBranchName;
     private long timestamp;
+    private SharedPreferences sharedPref;
+    private String userID;
 
     public static StartFeedbackFragment newInstance(Store store, String branchName) {
 
@@ -63,11 +70,19 @@ public class StartFeedbackFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_start_feedback, container, false);
 
+        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+
+        try {
+            userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }catch (NullPointerException e){
+            System.out.println(e);
+            userID = "Anonymous";
+        }
+
         setInitialView(v);
 
         getTime();
 
-        offlineDataBase();
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +92,8 @@ public class StartFeedbackFragment extends Fragment {
                 }else {
                     timeChanged();
                 }
+
+                saveInfoToSharedPref();
 
                 getActivity()
                         .getSupportFragmentManager()
@@ -177,9 +194,13 @@ public class StartFeedbackFragment extends Fragment {
         }
     }
 
-    private void offlineDataBase(){
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myReference = database.getReference();
+    private void saveInfoToSharedPref(){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("customerID", userID);
+        editor.putString("storeID", thisStore.getStoreID());
+        editor.putString("branchName", thisBranchName);
+        editor.putLong("timestamp", timestamp);
+        editor.commit();
     }
 
 }

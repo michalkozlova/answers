@@ -2,6 +2,8 @@ package michal.edu.answers.LeaveFeedback;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import michal.edu.answers.AllStoresFragment;
 import michal.edu.answers.DataSource;
 import michal.edu.answers.Listeners.StoreListener;
+import michal.edu.answers.Models.Feedback;
 import michal.edu.answers.Models.Store;
 import michal.edu.answers.R;
 
@@ -36,6 +39,7 @@ public class CommentFragment extends Fragment {
     private Store thisStore;
     private String thisBranchName;
     private FragmentManager manager;
+    private SharedPreferences sharedPref;
 
 
     public static CommentFragment newInstance(Store store, String branchName) {
@@ -54,12 +58,19 @@ public class CommentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_comment, container, false);
 
+        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+
         setInitialView(v);
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 doneDialog();
+
+                System.out.println(sharedPref);
+
+                readDataFromSharedPref();
+
                 dataSource.getStoresFromFirebase(new StoreListener() {
                     @Override
                     public void onStoreCallBack(ArrayList<Store> stores) {
@@ -96,6 +107,22 @@ public class CommentFragment extends Fragment {
         //TODO: different message depends on feedback result
         builder.setMessage("We really appreciate your time");
         builder.show();
+    }
+
+    private void readDataFromSharedPref(){
+        String customerID = sharedPref.getString("customerID", "Anonymous");
+        String storeID = sharedPref.getString("storeID", "storeID");
+        String branchName = sharedPref.getString("branchName", "branchName");
+        long timestamp = sharedPref.getLong("timestamp", 000000);
+        Feedback feedback = new Feedback(customerID, storeID, branchName, timestamp, "new comment", null);
+        System.out.println(feedback);
+
+    }
+
+    private void deleteDataFromSharedPref(){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.commit();
     }
 
 }

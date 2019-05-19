@@ -1,6 +1,8 @@
 package michal.edu.answers;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private DataSource dataSource = DataSource.getInstance();
+    //SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

@@ -21,10 +21,12 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
 
     private List<Question> questionList;
     private FragmentActivity activity;
+    private int sectionID;
 
-    public QuestionAdapter(List<Question> questionList, FragmentActivity activity) {
+    public QuestionAdapter(List<Question> questionList, FragmentActivity activity, int sectionID) {
         this.questionList = questionList;
         this.activity = activity;
+        this.sectionID = sectionID;
     }
 
     @NonNull

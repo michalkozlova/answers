@@ -95,7 +95,7 @@ public class FirstSectionFragment extends Fragment {
 
         tvTitleFirstSectionFeedback.setText("FEEDBACK: " + thisStore.getQuestionnaire().get(0).getSectionName());
 
-        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(0).getQuestions(), getActivity());
+        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(0).getQuestions(), getActivity(), 0);
         rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
         rvQuestions.setAdapter(adapter);
 
