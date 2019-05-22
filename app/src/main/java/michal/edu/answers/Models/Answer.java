@@ -5,13 +5,16 @@ import java.io.Serializable;
 public class Answer implements Serializable {
 
     private String questionID;
+    private int questionType;
     private float answerValue;
 
     public Answer() {
     }
 
-    public Answer(String questionID, float answerValue) {
+
+    public Answer(String questionID, int questionType, float answerValue) {
         this.questionID = questionID;
+        this.questionType = questionType;
         this.answerValue = answerValue;
     }
 
@@ -23,11 +26,19 @@ public class Answer implements Serializable {
         this.questionID = questionID;
     }
 
+    public int getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(int questionType) {
+        this.questionType = questionType;
+    }
+
     public float getAnswerValue() {
         return answerValue;
     }
 
-    public void setAnswerValue(int answerValue) {
+    public void setAnswerValue(float answerValue) {
         this.answerValue = answerValue;
     }
 
@@ -35,6 +46,7 @@ public class Answer implements Serializable {
     public String toString() {
         return "Answer{" +
                 "questionID='" + questionID + '\'' +
+                ", questionType=" + questionType +
                 ", answerValue=" + answerValue +
                 '}';
     }

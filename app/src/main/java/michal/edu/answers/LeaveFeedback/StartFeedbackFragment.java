@@ -96,7 +96,7 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
 
                 if (timeIsValid()) {
                     //TODO: take of comment
-//                saveInfoToSharedPref();
+                saveInfoToSharedPref();
 
                 getActivity()
                         .getSupportFragmentManager()

@@ -50,7 +50,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             questionViewHolder.ratingBar.setVisibility(View.INVISIBLE);
         }else {
             questionViewHolder.radioGroup.setVisibility(View.INVISIBLE);
-            //questionViewHolder.ratingBar.setNumStars(5);
         }
 
         questionViewHolder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -58,8 +57,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putFloat(question.getQuestionID(), rating);
+                editor.putInt(question.getQuestionID() + "T", question.getQuestionType());
                 editor.apply();
-                System.out.println("rating" + rating);
+                System.out.println("rating " + rating);
             }
         });
 
@@ -69,8 +69,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putFloat(question.getQuestionID(), checkedId);
+                editor.putInt(question.getQuestionID() + "T", question.getQuestionType());
                 editor.apply();
-                System.out.println("checkedId" + checkedId);
+                System.out.println("checkedId " + checkedId);
             }
         });
     }

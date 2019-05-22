@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,10 +43,10 @@ import michal.edu.answers.R;
  */
 public class CommentFragment extends Fragment {
 
-    private DatabaseReference reference;
     private DataSource dataSource = DataSource.getInstance();
     private ProgressBar progressBar;
     private TextView firstLetter;
+    private EditText etComment;
     private ImageView cardImage;
     private Button btnDone;
     private Store thisStore;
@@ -79,8 +80,6 @@ public class CommentFragment extends Fragment {
             public void onClick(View v) {
                 doneDialog();
 
-                System.out.println(sharedPref);
-
                 readDataFromSharedPref();
 
                 deleteDataFromSharedPref();
@@ -102,6 +101,7 @@ public class CommentFragment extends Fragment {
         firstLetter = v.findViewById(R.id.firstLetter);
         cardImage = v.findViewById(R.id.cardImage);
         btnDone = v.findViewById(R.id.btnDone);
+        etComment = v.findViewById(R.id.etComment);
 
         manager = getFragmentManager();
 
@@ -113,7 +113,6 @@ public class CommentFragment extends Fragment {
         progressBar.setProgress(5);
     }
 
-
     private void doneDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -121,6 +120,16 @@ public class CommentFragment extends Fragment {
         //TODO: different message depends on feedback result
         builder.setMessage("We really appreciate your time");
         builder.show();
+    }
+
+    private String getComment(){
+        String comment;
+        if (etComment.getText() != null){
+            comment = etComment.getText().toString();
+        }else {
+            comment = " ";
+        }
+        return comment;
     }
 
     private void readDataFromSharedPref(){
@@ -139,7 +148,8 @@ public class CommentFragment extends Fragment {
             int x = thisStore.getQuestionnaire().get(i).getQuestions().size();
             for (int j = 0; j < x; j++) {
                 Float answerValue = sharedPref.getFloat(i + "" + j, (float) 0.0);
-                Answer answer = new Answer(i + "" + j, answerValue);
+                int questionType = sharedPref.getInt(i + "" + j + "T", 0);
+                Answer answer = new Answer(i + "" + j, questionType, answerValue);
                 answers.add(answer);
             }
             sectionAnswer.setAnswers(answers);
@@ -155,13 +165,10 @@ public class CommentFragment extends Fragment {
             }
         }
 
-        Feedback feedback = new Feedback(customerID, storeID, branchName, timestamp, "new comment", city, sectionAnswers);
+        Feedback feedback = new Feedback(customerID, storeID, branchName, timestamp, getComment(), city, sectionAnswers);
         System.out.println(feedback);
 
         saveToFB(feedback);
-
-
-
     }
 
     private void saveToFB(Feedback feedback){
