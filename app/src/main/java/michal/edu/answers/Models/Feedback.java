@@ -10,14 +10,16 @@ public class Feedback implements Serializable {
     private String branchName;
     private long timestamp;
     private String comment;
+    private String city;
     private ArrayList<SectionAnswer> answerSections;
 
-    public Feedback(String customerID, String storeID, String branchName, long timestamp, String comment, ArrayList<SectionAnswer> answerSections) {
+    public Feedback(String customerID, String storeID, String branchName, long timestamp, String comment, String city, ArrayList<SectionAnswer> answerSections) {
         this.customerID = customerID;
         this.storeID = storeID;
         this.branchName = branchName;
         this.timestamp = timestamp;
         this.comment = comment;
+        this.city = city;
         this.answerSections = answerSections;
     }
 
@@ -72,6 +74,14 @@ public class Feedback implements Serializable {
         this.answerSections = answerSections;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     @Override
     public String toString() {
         return "Feedback{" +
@@ -80,6 +90,7 @@ public class Feedback implements Serializable {
                 ", branchName='" + branchName + '\'' +
                 ", timestamp=" + timestamp +
                 ", comment='" + comment + '\'' +
+                ", city='" + city + '\'' +
                 ", answerSections=" + answerSections +
                 '}';
     }

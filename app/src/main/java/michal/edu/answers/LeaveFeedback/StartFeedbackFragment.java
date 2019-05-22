@@ -1,9 +1,11 @@
 package michal.edu.answers.LeaveFeedback;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -91,16 +93,20 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    timeChanged();
-//TODO: take of comment
+
+                if (timeIsValid()) {
+                    //TODO: take of comment
 //                saveInfoToSharedPref();
-//
-//                getActivity()
-//                        .getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.container, FirstSectionFragment.newInstance(thisStore, thisBranchName))
-//                        .disallowAddToBackStack()
-//                        .commit();
+
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, FirstSectionFragment.newInstance(thisStore, thisBranchName))
+                        .disallowAddToBackStack()
+                        .commit();
+                } else {
+                    timeIsNotCorrectDialog();
+                }
             }
         });
 
@@ -108,15 +114,11 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
     }
 
     private void setInitialView(View v){
-        //spinnerMonth = v.findViewById(R.id.spinnerMonth);
         cardImage = v.findViewById(R.id.cardImage);
         firstLetter = v.findViewById(R.id.firstLetter);
         tvStoreNameBranchName = v.findViewById(R.id.tvStoreNameBranchName);
         btnNext = v.findViewById(R.id.btnNext);
         bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
-//        etDate = v.findViewById(R.id.etDate);
-//        etHour = v.findViewById(R.id.etHour);
-//        etMin = v.findViewById(R.id.etMin);
         tvFullDate = v.findViewById(R.id.tvFullDate);
         tvFullTime = v.findViewById(R.id.tvFullTime);
 
@@ -134,10 +136,6 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
         dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
         tvStoreNameBranchName.setText(thisStore.getStoreName() + " / " + thisBranchName);
 
-//        ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(getContext(), R.array.months, R.layout.spinner_item_month);
-//        monthAdapter.setDropDownViewResource(R.layout.spinner_item_month);
-//        spinnerMonth.setAdapter(monthAdapter);
-
         bottomBar.clearAnimation();
         bottomBar.animate().translationY(bottomBar.getHeight()).setDuration(400);
 
@@ -152,71 +150,82 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
         System.out.println("Full date and Time: " + fullDateAndTime);
     }
 
-    private int day(){
-        String dayString = fullDateAndTime.substring(6, 8);
-        return Integer.valueOf(dayString);
-    }
-
-    private int month(){
-        String monthString = fullDateAndTime.substring(9, 11);
-        return Integer.valueOf(monthString)-1;
-    }
-
-    private int year(){
-        String yearString = fullDateAndTime.substring(12, 16);
-        return Integer.valueOf(yearString);
-    }
-
     private void showDatePickerDialog() {
-        new DatePickerDialog(getContext(), this, year(), month(), day()).show();
+        int year = Integer.valueOf(fullDate.substring(6, 10));
+        int month = Integer.valueOf(fullDate.substring(3, 5));
+        int day = Integer.valueOf(fullDate.substring(0, 2));
+        new DatePickerDialog(getContext(), this, year, month-1, day).show();
     }
-
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Toast.makeText(getContext(), "Done " + dayOfMonth + "/" + (month+1) + "/" + year, Toast.LENGTH_SHORT).show();
-        fullDate = dayOfMonth + "/" + (month+1) + "/" + year;
+        String dayString = "";
+        if (dayOfMonth < 10){
+            dayString = "0" + dayOfMonth;
+        }else {
+            dayString = String.valueOf(dayOfMonth);
+        }
+
+        String monthString = "";
+        if ((month+1) < 10){
+            monthString = "0" + (month+1);
+        }else {
+            monthString = String.valueOf((month+1));
+        }
+
+        fullDate = dayString + "/" + monthString + "/" + year;
         tvFullDate.setText(fullDate);
     }
 
-
-    private int hour(){
-        String hourString = fullDateAndTime.substring(0, 2);
-        return Integer.valueOf(hourString);
-    }
-    private int min(){
-        String minString = fullDateAndTime.substring(3, 5);
-        return Integer.valueOf(minString);
-    }
-
     private void showTimePickerDialog() {
-        new TimePickerDialog(getContext(), this, hour(), min(), true).show();
+        int hour = Integer.valueOf(fullTime.substring(0,2));
+        int min = Integer.valueOf(fullTime.substring(3,5));
+        new TimePickerDialog(getContext(), this, hour, min, true).show();
     }
-
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        Toast.makeText(getContext(), "Done: " + hourOfDay + ":" + minute, Toast.LENGTH_SHORT).show();
-        fullTime = hourOfDay + ":" + minute;
+        String hourString = "";
+        if (hourOfDay < 10){
+            hourString = "0" + hourOfDay;
+        } else if (hourOfDay == 24){
+            hourString = "00";
+        } else {
+            hourString = String.valueOf(hourOfDay);
+        }
+
+        String minuteString = "";
+        if (minute < 10){
+            minuteString = "0" + minute;
+        }else {
+            minuteString = String.valueOf(minute);
+        }
+
+        fullTime = hourString + ":" + minuteString;
         tvFullTime.setText(fullTime);
     }
 
-    private long timeChanged(){
-        //TODO: fix the method
-        System.out.println(timestamp + " before time was changed");
-        //long month = spinnerMonth.getSelectedItemId() + 1;
+    private boolean timeIsValid(){
+            //System.out.println(timestamp + " before time was changed");
 
-        SimpleDateFormat formatter = new SimpleDateFormat("kk:mm dd/MM/yyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("kk:mm dd/MM/yyy");
 
-        try {
-            Date mDate = formatter.parse(fullTime + " " + fullDate);
-            timestamp = mDate.getTime();
-            System.out.println(timestamp + " after time was changed");
-            String newFullTime = formatter.format(new Date(timestamp));
-            System.out.println(newFullTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            try {
+                Date mDate = formatter.parse(fullTime + " " + fullDate);
+                timestamp = mDate.getTime();
+                //System.out.println(timestamp + " after time was changed");
+//                String newFullTime = formatter.format(new Date(timestamp));
+//                System.out.println(newFullTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        if (timestamp > System.currentTimeMillis()){
+            System.out.println("SET:     " + timestamp);
+            System.out.println("CURRENT: " + System.currentTimeMillis());
+            return false;
+        }else {
+            return true;
         }
 
-        return timestamp;
     }
 
     private void saveInfoToSharedPref(){
@@ -226,5 +235,18 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
         editor.putString("branchName", thisBranchName);
         editor.putLong("timestamp", timestamp);
         editor.apply();
+    }
+
+    private void timeIsNotCorrectDialog(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Time is not correct");
+        builder.setMessage("Time of the purchase can't be in future");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
     }
 }

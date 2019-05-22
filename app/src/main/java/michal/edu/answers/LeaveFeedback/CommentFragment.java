@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.print.PrinterId;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -16,6 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.dynamic.SupportFragmentWrapper;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -23,6 +31,7 @@ import michal.edu.answers.AllStoresFragment;
 import michal.edu.answers.DataSource;
 import michal.edu.answers.Listeners.StoreListener;
 import michal.edu.answers.Models.Answer;
+import michal.edu.answers.Models.Branch;
 import michal.edu.answers.Models.Feedback;
 import michal.edu.answers.Models.SectionAnswer;
 import michal.edu.answers.Models.Store;
@@ -33,6 +42,7 @@ import michal.edu.answers.R;
  */
 public class CommentFragment extends Fragment {
 
+    private DatabaseReference reference;
     private DataSource dataSource = DataSource.getInstance();
     private ProgressBar progressBar;
     private TextView firstLetter;
@@ -137,8 +147,33 @@ public class CommentFragment extends Fragment {
             sectionAnswers.add(sectionAnswer);
         }
 
-        Feedback feedback = new Feedback(customerID, storeID, branchName, timestamp, "new comment", sectionAnswers);
+        ArrayList<Branch> branches = thisStore.getBranches();
+        String city = "";
+        for (Branch branch : branches) {
+            if (branch.getBranchName() == thisBranchName){
+                city = branch.getBranchAddress().getCity();
+            }
+        }
+
+        Feedback feedback = new Feedback(customerID, storeID, branchName, timestamp, "new comment", city, sectionAnswers);
         System.out.println(feedback);
+
+        saveToFB(feedback);
+
+
+
+    }
+
+    private void saveToFB(Feedback feedback){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        String key = ref.push().getKey();
+        ref = FirebaseDatabase.getInstance().getReference().child("Feedbacks").child(feedback.getStoreID()).child(key);
+        ref.setValue(feedback).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        });
 
     }
 
@@ -147,5 +182,6 @@ public class CommentFragment extends Fragment {
         editor.clear();
         editor.apply();
     }
+
 
 }

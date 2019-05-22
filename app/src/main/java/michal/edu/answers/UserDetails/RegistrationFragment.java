@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,19 @@ import android.widget.Spinner;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.util.concurrent.TimeUnit;
 
 import michal.edu.answers.R;
+
+import static android.support.constraint.Constraints.TAG;
 
 
 /**
@@ -28,9 +38,10 @@ import michal.edu.answers.R;
  */
 public class RegistrationFragment extends Fragment {
 
-    EditText etName, etPassword, etConfirmPassword, etNumber;
-    Button btnRegistration;
-    Spinner phoneExtention;
+    private EditText etName, etPassword, etConfirmPassword, etNumber;
+    private Button btnRegistration;
+    private Spinner phoneExtention;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
 
     public RegistrationFragment() {
@@ -45,12 +56,57 @@ public class RegistrationFragment extends Fragment {
 
         setInitialView(v);
 
-        btnRegistration.setOnClickListener(new View.OnClickListener() {
+//        btnRegistration.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                register();
+//            }
+//        });
+
+
+/*
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
-            public void onClick(View v) {
-                register();
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                Log.d(TAG, "onVerificationCompleted:" + phoneAuthCredential);
+
+                //TODO: finish
+                signInWithPhoneAuthCredential(phoneAuthCredential);
             }
-        });
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                Log.w(TAG, "onVerificationFailed", e);
+
+                if (e instanceof FirebaseAuthInvalidCredentialsException){
+                    //TODO:
+                    //Invalid request
+                    //...
+                }else if (e instanceof FirebaseTooManyRequestsException){
+                    //TODO:
+                    //the sms quota for the project has been exceeded
+                }
+
+                //TODO:
+                //show a message and update UI
+            }
+
+            @Override
+            public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                //TODO: do i need super??
+                //super.onCodeSent(s, forceResendingToken);
+
+                Log.d(TAG, "onCodeSent:" + s);
+
+                //Save verification ID and resending token so we can use them later
+                //TODO: finish
+                mVerificationId = s;
+                mResendTOken = forceResendingToken;
+            }
+        };
+        */
+
+
 
 //        btnRegistration.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -63,8 +119,9 @@ public class RegistrationFragment extends Fragment {
 //                        number(),        // Phone number to verify
 //                        60,                 // Timeout duration
 //                        TimeUnit.SECONDS,   // Unit of timeout
-//                        this,               // Activity (for callback binding)
+//                        getActivity(),               // Activity (for callback binding)
 //                        mCallbacks);        // OnVerificationStateChangedCallbacks
+//
 //            }
 //        });
 
@@ -121,20 +178,17 @@ public class RegistrationFragment extends Fragment {
     private String name() {
         return etName.getText().toString();
     }
-
     private String password() {
         return etPassword.getText().toString();
     }
-
     private String confirmPassword() {
         return etConfirmPassword.getText().toString();
     }
-
     private String number() {
         StringBuilder builder = new StringBuilder();
         builder.append(phoneExtention.getSelectedItem().toString() + etNumber.getText().toString());
         builder.deleteCharAt(0);
-        return "972" + builder;
+        return "+972" + builder;
     }
 
     private boolean isNameValid() {
@@ -145,7 +199,6 @@ public class RegistrationFragment extends Fragment {
             return true;
         }
     }
-
     private boolean isPasswordValid() {
         if (password().isEmpty()) {
             etPassword.setError("Password can not be empty!");
@@ -157,7 +210,6 @@ public class RegistrationFragment extends Fragment {
         }
         return isPasswordValid;
     }
-
     private boolean isPasswordConfirmed() {
         if (confirmPassword().isEmpty()) {
             etConfirmPassword.setError("Please confirm password");
@@ -169,7 +221,6 @@ public class RegistrationFragment extends Fragment {
             return true;
         }
     }
-
     private boolean isPhoneValid(){
         if(number().isEmpty()){
             etNumber.setError("Please put phone number");
@@ -182,7 +233,6 @@ public class RegistrationFragment extends Fragment {
             return true;
         }
     }
-
 
     ProgressDialog dialog;
     private void showProgress(boolean show) {

@@ -13,9 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import michal.edu.answers.Models.Feedback;
 import michal.edu.answers.Models.Store;
 import michal.edu.answers.Listeners.StoreListener;
 import michal.edu.answers.UserDetails.LoginFragment;
@@ -71,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
         navigation.setSelectedItemId(R.id.all_stores);
         navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
 
+        queryTest();
+
     }
 
     private void checkIfLoggedIn(){
@@ -95,4 +104,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void queryTest(){
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("Feedbacks")
+                .child("WCnPCx747rNWF2bMEXqFWz8Caq63");
+
+        ref.orderByChild("timestamp").startAt(1558471564000L).endAt(1558471680000L).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Feedback feedback = snapshot.getValue(Feedback.class);
+
+                    if (feedback.getCity().equals("Efrat")){
+                        System.out.println(feedback.getComment() + ", City: " + feedback.getCity());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 }
