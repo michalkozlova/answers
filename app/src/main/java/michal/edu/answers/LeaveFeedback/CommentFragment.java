@@ -175,12 +175,7 @@ public class CommentFragment extends Fragment {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         String key = ref.push().getKey();
         ref = FirebaseDatabase.getInstance().getReference().child("Feedbacks").child(feedback.getStoreID()).child(key);
-        ref.setValue(feedback).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-
-            }
-        });
+        ref.setValue(feedback);
 
     }
 

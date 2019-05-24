@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import michal.edu.answers.Adapters.StoreAdapter;
 import michal.edu.answers.Models.Store;
@@ -93,6 +95,15 @@ public class AllStoresFragment extends Fragment {
 
     private void getAllLists(){
         allStores = (ArrayList<Store>) getArguments().getSerializable("stores");
+
+        //sort stores with ABC
+        Collections.sort(allStores, new Comparator<Store>() {
+            @Override
+            public int compare(Store o1, Store o2) {
+                return o1.getStoreName().compareTo(o2.getStoreName());
+            }
+        });
+
         stores = new ArrayList<>();
         restaurants = new ArrayList<>();
         for (Store store : allStores) {

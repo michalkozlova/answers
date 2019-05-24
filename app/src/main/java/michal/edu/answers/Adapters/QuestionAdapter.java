@@ -47,9 +47,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         questionViewHolder.tvQuestionText.setText(question.getQuestionText());
 
         if (question.getQuestionType() == 0) {
-            questionViewHolder.ratingBar.setVisibility(View.INVISIBLE);
+            questionViewHolder.ratingBar.setVisibility(View.GONE);
         }else {
-            questionViewHolder.radioGroup.setVisibility(View.INVISIBLE);
+            questionViewHolder.radioGroup.setVisibility(View.GONE);
         }
 
         questionViewHolder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

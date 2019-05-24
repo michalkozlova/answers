@@ -66,12 +66,14 @@ public class AllBranchesFragment extends Fragment {
 
 
             //sort branches with ABC
+        //if (!thisStore.getBranches().isEmpty()) {
             Collections.sort(thisStore.getBranches(), new Comparator<Branch>() {
                 @Override
                 public int compare(Branch o1, Branch o2) {
                     return o1.getBranchName().compareTo(o2.getBranchName());
                 }
             });
+     //   }
 
             adapter = new BranchAdapter(thisStore, thisStore.getBranches(), getActivity());
             rvBranches.setLayoutManager(new LinearLayoutManager(getContext()));
