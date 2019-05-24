@@ -4,9 +4,12 @@ package michal.edu.answers.UserDetails;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -112,7 +115,7 @@ public class RegistrationFragment extends Fragment {
         return v;
     }
 
-//
+
 //    //TODO: 176 - 187
 //    @Override
 //    public void onStart() {
@@ -203,6 +206,13 @@ public class RegistrationFragment extends Fragment {
                             Customer customer = new Customer(customerID, name(), number());
                             ref.setValue(customer);
 
+                            getActivity()
+                                    .getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.container, PersonalDetailsFragment.newInstance(customer))
+                                    .disallowAddToBackStack()
+                                    .commit();
+
 
                         } else {
                             // Sign in failed, display a message and update the UI
@@ -224,40 +234,6 @@ public class RegistrationFragment extends Fragment {
     // [END sign_in_with_phone]
 
 
-    private void registerWithEmail() {
-        if (!isNameValid() | !isPasswordValid() | !isPasswordConfirmed() | !isPhoneValid()) {
-            return;
-        }
-
-        showProgress(true);
-
-        Task<AuthResult> task = FirebaseAuth.getInstance().createUserWithEmailAndPassword(number() + "@" + number() + ".com", password());
-        task.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                System.out.println("DONE");
-                showProgress(false);
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, new PersonalDetailsFragment())
-                        .disallowAddToBackStack()
-                        .commit();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                showProgress(false);
-                Snackbar.make(btnRegistration, e.getLocalizedMessage(), Snackbar.LENGTH_INDEFINITE).setAction("Ok", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).show();
-            }
-        });
-    }
-
     private void setInitialView(View v){
         phoneExtention = v.findViewById(R.id.spinnerExtention);
         etName = v.findViewById(R.id.etName);
@@ -269,6 +245,10 @@ public class RegistrationFragment extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.phone_extentions, R.layout.spinner_item_phone);
         adapter.setDropDownViewResource(R.layout.spinner_item_phone);
         phoneExtention.setAdapter(adapter);
+
+        getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffEA4C5F"));
+        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
+        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ff4954F7")));
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -441,37 +421,15 @@ public class RegistrationFragment extends Fragment {
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton("Resend code", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                alertDialog.cancel();
+                //TODO: not to close alertDialog
+                resendVerificationCode(number(), mResendToken);
             }
         });
 
         alertDialog = builder.show();
     }
-
-//    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()){
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "signInWithCredential:success");
-//
-//                            FirebaseUser user = task.getResult().getUser();
-//                            // ...
-//                        } else {
-//                            // Sign in failed, display a message and update the UI
-//                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-//                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-//                                // The verification code entered was invalid
-//                            }
-//                        }
-//                    }
-//                });
-//    }
 
 }

@@ -1,6 +1,8 @@
 package michal.edu.answers.Models;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable {
 
     private String customerID;
     private String customerName;

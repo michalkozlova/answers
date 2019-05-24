@@ -22,6 +22,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import michal.edu.answers.Listeners.CustomerListener;
+import michal.edu.answers.Models.Customer;
 import michal.edu.answers.Models.Feedback;
 import michal.edu.answers.Models.Store;
 import michal.edu.answers.Listeners.StoreListener;
@@ -32,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private DataSource dataSource = DataSource.getInstance();
-    //SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -95,15 +96,23 @@ public class MainActivity extends AppCompatActivity {
                             .addToBackStack("")
                             .commit();
                 }else {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.container, new PersonalDetailsFragment())
-                            .addToBackStack("")
-                            .commit();
+                    String customerID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    dataSource.getCustomerFromFirebase(customerID, new CustomerListener() {
+                                @Override
+                                public void onCustomerCallback(Customer customer) {
+                                    getSupportFragmentManager()
+                                            .beginTransaction()
+                                            .replace(R.id.container, PersonalDetailsFragment.newInstance(customer))
+                                            .addToBackStack("")
+                                            .commit();
+                                }
+                            });
                 }
             }
         });
     }
+
+
 
     private void queryTest(){
         DatabaseReference ref = FirebaseDatabase.getInstance()

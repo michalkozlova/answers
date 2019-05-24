@@ -43,7 +43,7 @@
         app:srcCompat="@mipmap/login_round" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tvCustomerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -68,7 +68,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerName" />
 
     <Button
         android:id="@+id/btnLogout"

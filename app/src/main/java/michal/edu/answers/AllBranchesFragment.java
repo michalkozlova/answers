@@ -66,6 +66,7 @@ public class AllBranchesFragment extends Fragment {
 
 
             //sort branches with ABC
+        //TODO: add a check
         //if (!thisStore.getBranches().isEmpty()) {
             Collections.sort(thisStore.getBranches(), new Comparator<Branch>() {
                 @Override
