@@ -57,17 +57,17 @@ public class FirstSectionFragment extends Fragment {
 
         setInitialView(v);
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, SecondSectionFragment.newInstance(thisStore, thisBranchName))
-                        .disallowAddToBackStack()
-                        .commit();
-            }
-        });
+//        btnNext.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getActivity()
+//                        .getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.container, SecondSectionFragment.newInstance(thisStore, thisBranchName))
+//                        .disallowAddToBackStack()
+//                        .commit();
+//            }
+//        });
 
 
 
@@ -79,34 +79,30 @@ public class FirstSectionFragment extends Fragment {
         tvTitleFirstSectionFeedback = v.findViewById(R.id.tvTitleSectionFeedback);
         cardImage = v.findViewById(R.id.cardImage);
         firstLetter = v.findViewById(R.id.firstLetter);
-        rvQuestions = v.findViewById(R.id.rvQuestions);
-        btnNext = v.findViewById(R.id.btnNext);
+//        rvQuestions = v.findViewById(R.id.rvQuestions);
+//        btnNext = v.findViewById(R.id.btnNext);
 
         thisStore = (Store) getArguments().getSerializable("store");
         thisBranchName = (String) getArguments().getSerializable("branchName");
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
-//        dataSource.getQuestionnaireFromFirebase(thisStore, new SectionListener() {
-//            @Override
-//            public void onSectionCallback(ArrayList<Section> questionnaire) {
-//                tvTitleFirstSectionFeedback.setText("FEEDBACK: " + questionnaire.get(0).getSectionName());
-//
-//                QuestionAdapter adapter = new QuestionAdapter(questionnaire.get(0).getQuestions(), getActivity());
-//                rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
-//                rvQuestions.setAdapter(adapter);
-//            }
-//        });
 
         tvTitleFirstSectionFeedback.setText("FEEDBACK: " + thisStore.getQuestionnaire().get(0).getSectionName());
 
-        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(0).getQuestions(), getActivity(), 0, sharedPref);
-        rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvQuestions.setAdapter(adapter);
+//        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(0).getQuestions(), getActivity(), 0, sharedPref);
+//        rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
+//        rvQuestions.setAdapter(adapter);
 
         dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
 
         progressBar.setProgress(2);
+
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.scrollContainer, ScrollViewFragment.newInstance(thisStore))
+                .commit();
     }
 
 }
