@@ -27,9 +27,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import michal.edu.answers.DataSource;
+import michal.edu.answers.Models.Branch;
 import michal.edu.answers.Models.Store;
 import michal.edu.answers.R;
 
@@ -101,7 +103,7 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.container, FirstSectionFragment.newInstance(thisStore, thisBranchName))
+                        .replace(R.id.container, FirstSectionFragment.newInstance(thisStore))
                         .disallowAddToBackStack()
                         .commit();
                 } else {
@@ -229,10 +231,19 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
     }
 
     private void saveInfoToSharedPref(){
+        ArrayList<Branch> branches = thisStore.getBranches();
+        String city = "";
+        for (Branch branch : branches) {
+            if (branch.getBranchName() == thisBranchName){
+                city = branch.getBranchAddress().getCity();
+            }
+        }
+
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("customerID", userID);
         editor.putString("storeID", thisStore.getStoreID());
         editor.putString("branchName", thisBranchName);
+        editor.putString("city", city);
         editor.putLong("timestamp", timestamp);
         editor.apply();
     }

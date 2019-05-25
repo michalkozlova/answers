@@ -24,12 +24,14 @@ public class ScrollViewFragment extends Fragment {
     private RecyclerView rvQuestions;
     private Button btnNext;
     private Store thisStore;
+    private int sectionID;
     private SharedPreferences sharedPref;
 
-    public static ScrollViewFragment newInstance(Store store) {
+    public static ScrollViewFragment newInstance(Store store, int sectionID) {
 
         Bundle args = new Bundle();
         args.putSerializable("store", store);
+        args.putSerializable("sectionID", sectionID);
         ScrollViewFragment fragment = new ScrollViewFragment();
         fragment.setArguments(args);
         return fragment;
@@ -44,15 +46,61 @@ public class ScrollViewFragment extends Fragment {
         rvQuestions = v.findViewById(R.id.rvQuestions);
         btnNext = v.findViewById(R.id.btnNext);
 
-        btnNext.setVisibility(View.VISIBLE);
-
         thisStore = (Store) getArguments().getSerializable("store");
+        sectionID = (int) getArguments().getSerializable("sectionID");
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
-        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(0).getQuestions(), getActivity(), 0, sharedPref);
+        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(sectionID).getQuestions(), getActivity(), sectionID, sharedPref);
         rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
         rvQuestions.setAdapter(adapter);
+
+
+        System.out.println(sectionID);
+        switch (sectionID){
+            case 0:
+                btnNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity()
+                                .getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, SecondSectionFragment.newInstance(thisStore))
+                                .disallowAddToBackStack()
+                                .commit();
+                    }
+                });
+                break;
+
+            case 1:
+                btnNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity()
+                                .getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, ThirdSectionFragment.newInstance(thisStore))
+                                .disallowAddToBackStack()
+                                .commit();
+                    }
+                });
+                break;
+
+            case 2:
+                btnNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity()
+                                .getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, CommentFragment.newInstance(thisStore))
+                                .disallowAddToBackStack()
+                                .commit();
+                    }
+                });
+                break;
+        }
+
 
         return v;
     }

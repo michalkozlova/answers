@@ -33,17 +33,16 @@ public class FirstSectionFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView tvTitleFirstSectionFeedback, firstLetter;
     private ImageView cardImage;
-    private RecyclerView rvQuestions;
-    private Button btnNext;
+//    private RecyclerView rvQuestions;
+//    private Button btnNext;
     private Store thisStore;
-    private String thisBranchName;
+//    private String thisBranchName;
     private SharedPreferences sharedPref;
 
-    public static FirstSectionFragment newInstance(Store store, String branchName) {
+    public static FirstSectionFragment newInstance(Store store) {
 
         Bundle args = new Bundle();
         args.putSerializable("store", store);
-        args.putSerializable("branchName", branchName);
         FirstSectionFragment fragment = new FirstSectionFragment();
         fragment.setArguments(args);
         return fragment;
@@ -83,7 +82,7 @@ public class FirstSectionFragment extends Fragment {
 //        btnNext = v.findViewById(R.id.btnNext);
 
         thisStore = (Store) getArguments().getSerializable("store");
-        thisBranchName = (String) getArguments().getSerializable("branchName");
+//        thisBranchName = (String) getArguments().getSerializable("branchName");
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
@@ -101,7 +100,7 @@ public class FirstSectionFragment extends Fragment {
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.scrollContainer, ScrollViewFragment.newInstance(thisStore))
+                .replace(R.id.scrollContainer, ScrollViewFragment.newInstance(thisStore, 0))
                 .commit();
     }
 

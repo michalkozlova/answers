@@ -50,16 +50,16 @@ public class CommentFragment extends Fragment {
     private ImageView cardImage;
     private Button btnDone;
     private Store thisStore;
-    private String thisBranchName;
+//    private String thisBranchName;
     private FragmentManager manager;
     private SharedPreferences sharedPref;
 
 
-    public static CommentFragment newInstance(Store store, String branchName) {
+    public static CommentFragment newInstance(Store store) {
 
         Bundle args = new Bundle();
         args.putSerializable("store", store);
-        args.putSerializable("branchName", branchName);
+//        args.putSerializable("branchName", branchName);
         CommentFragment fragment = new CommentFragment();
         fragment.setArguments(args);
         return fragment;
@@ -106,7 +106,7 @@ public class CommentFragment extends Fragment {
         manager = getFragmentManager();
 
         thisStore = (Store) getArguments().getSerializable("store");
-        thisBranchName = (String) getArguments().getSerializable("branchName");
+//        thisBranchName = (String) getArguments().getSerializable("branchName");
 
         dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
 
@@ -136,6 +136,7 @@ public class CommentFragment extends Fragment {
         String customerID = sharedPref.getString("customerID", "Anonymous");
         String storeID = sharedPref.getString("storeID", "storeID");
         String branchName = sharedPref.getString("branchName", "branchName");
+        String city = sharedPref.getString("city", "city");
         long timestamp = sharedPref.getLong("timestamp", 000000);
 
         ArrayList<SectionAnswer> sectionAnswers = new ArrayList<>();
@@ -157,13 +158,6 @@ public class CommentFragment extends Fragment {
             sectionAnswers.add(sectionAnswer);
         }
 
-        ArrayList<Branch> branches = thisStore.getBranches();
-        String city = "";
-        for (Branch branch : branches) {
-            if (branch.getBranchName() == thisBranchName){
-                city = branch.getBranchAddress().getCity();
-            }
-        }
 
         Feedback feedback = new Feedback(customerID, storeID, branchName, timestamp, getComment(), city, sectionAnswers);
         System.out.println(feedback);

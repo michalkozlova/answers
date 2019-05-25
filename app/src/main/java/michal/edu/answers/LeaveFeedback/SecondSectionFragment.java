@@ -33,17 +33,17 @@ public class SecondSectionFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView tvTitleSecondSectionFeedback, firstLetter;
     private ImageView cardImage;
-    private RecyclerView rvQuestions;
-    private Button btnNext;
+//    private RecyclerView rvQuestions;
+//    private Button btnNext;
     private Store thisStore;
-    private String thisBranchName;
+//    private String thisBranchName;
     private SharedPreferences sharedPref;
 
-    public static SecondSectionFragment newInstance(Store store, String branchName) {
+    public static SecondSectionFragment newInstance(Store store) {
 
         Bundle args = new Bundle();
         args.putSerializable("store", store);
-        args.putSerializable("branchName", branchName);
+//        args.putSerializable("branchName", branchName);
         SecondSectionFragment fragment = new SecondSectionFragment();
         fragment.setArguments(args);
         return fragment;
@@ -57,17 +57,17 @@ public class SecondSectionFragment extends Fragment {
 
         setInitialView(v);
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, ThirdSectionFragment.newInstance(thisStore, thisBranchName))
-                        .disallowAddToBackStack()
-                        .commit();
-            }
-        });
+//        btnNext.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getActivity()
+//                        .getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.container, ThirdSectionFragment.newInstance(thisStore))
+//                        .disallowAddToBackStack()
+//                        .commit();
+//            }
+//        });
 
         return v;
     }
@@ -77,35 +77,29 @@ public class SecondSectionFragment extends Fragment {
         tvTitleSecondSectionFeedback = v.findViewById(R.id.tvTitleSectionFeedback);
         cardImage = v.findViewById(R.id.cardImage);
         firstLetter = v.findViewById(R.id.firstLetter);
-        rvQuestions = v.findViewById(R.id.rvQuestions);
-        btnNext = v.findViewById(R.id.btnNext);
+//        rvQuestions = v.findViewById(R.id.rvQuestions);
+//        btnNext = v.findViewById(R.id.btnNext);
 
         thisStore = (Store) getArguments().getSerializable("store");
-        thisBranchName = (String) getArguments().getSerializable("branchName");
+        //thisBranchName = (String) getArguments().getSerializable("branchName");
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
-//        dataSource.getQuestionnaireFromFirebase(thisStore, new SectionListener() {
-//            @Override
-//            public void onSectionCallback(ArrayList<Section> questionnaire) {
-//                tvTitleSecondSectionFeedback.setText("FEEDBACK: " + questionnaire.get(1).getSectionName());
-//
-//                QuestionAdapter adapter = new QuestionAdapter(questionnaire.get(1).getQuestions(), getActivity());
-//                rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
-//                rvQuestions.setAdapter(adapter);
-//
-//            }
-//        });
-
         tvTitleSecondSectionFeedback.setText("FEEDBACK: " + thisStore.getQuestionnaire().get(1).getSectionName());
 
-        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(1).getQuestions(), getActivity(), 1, sharedPref);
-        rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvQuestions.setAdapter(adapter);
+//        QuestionAdapter adapter = new QuestionAdapter(thisStore.getQuestionnaire().get(1).getQuestions(), getActivity(), 1, sharedPref);
+//        rvQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
+//        rvQuestions.setAdapter(adapter);
 
         dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
 
         progressBar.setProgress(3);
+
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.scrollContainer, ScrollViewFragment.newInstance(thisStore, 1))
+                .commit();
     }
 
 }
