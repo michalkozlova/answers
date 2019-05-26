@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import michal.edu.answers.DataSource;
+import michal.edu.answers.Listeners.BranchListener;
 import michal.edu.answers.Models.Branch;
 import michal.edu.answers.Models.Store;
 import michal.edu.answers.R;
@@ -231,21 +232,44 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
     }
 
     private void saveInfoToSharedPref(){
-        ArrayList<Branch> branches = thisStore.getBranches();
-        String city = "";
-        for (Branch branch : branches) {
-            if (branch.getBranchName() == thisBranchName){
-                city = branch.getBranchAddress().getCity();
-            }
-        }
+        dataSource.getBranchesFromFirebase(thisStore, new BranchListener() {
+            @Override
+            public void onBranchCallback(ArrayList<Branch> branches) {
 
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("customerID", userID);
-        editor.putString("storeID", thisStore.getStoreID());
-        editor.putString("branchName", thisBranchName);
-        editor.putString("city", city);
-        editor.putLong("timestamp", timestamp);
-        editor.apply();
+                String city = "";
+                for (Branch branch : branches) {
+                    if (branch.getBranchName() == thisBranchName){
+                        city = branch.getBranchAddress().getCity();
+                    }
+                }
+
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("customerID", userID);
+                editor.putString("storeID", thisStore.getStoreID());
+                editor.putString("branchName", thisBranchName);
+                editor.putString("city", city);
+                editor.putLong("timestamp", timestamp);
+                editor.apply();
+
+            }
+        });
+
+
+//        String city = "";
+//        for (Branch branch : branches) {
+//            if (branch.getBranchName() == thisBranchName){
+//                city = branch.getBranchAddress().getCity();
+//            }
+//        }
+
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putString("customerID", userID);
+//        editor.putString("storeID", thisStore.getStoreID());
+//        editor.putString("branchName", thisBranchName);
+//        editor.putString("city", city);
+//        editor.putLong("timestamp", timestamp);
+//        editor.apply();
     }
 
     private void timeIsNotCorrectDialog(){

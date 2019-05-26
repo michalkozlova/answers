@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onBindViewHolder(@NonNull QuestionViewHolder questionViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final QuestionViewHolder questionViewHolder, int i) {
         final Question question = questionList.get(i);
 
         questionViewHolder.tvQuestionText.setText(question.getQuestionText());
@@ -67,11 +68,18 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         questionViewHolder.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                float answerValue;
+                if (checkedId == questionViewHolder.rbYes.getId()){
+                    answerValue = (float) 1.0;
+                }else {
+                    answerValue = (float) 0.0;
+                }
+
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putFloat(question.getQuestionID(), checkedId);
+                editor.putFloat(question.getQuestionID(), answerValue);
                 editor.putInt(question.getQuestionID() + "T", question.getQuestionType());
                 editor.apply();
-                System.out.println("checkedId " + checkedId);
+                System.out.println("answerValue " + answerValue);
             }
         });
     }
@@ -86,6 +94,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         TextView tvQuestionText;
         RatingBar ratingBar;
         RadioGroup radioGroup;
+        RadioButton rbYes, rbNo;
 
         public QuestionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,6 +102,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             tvQuestionText = itemView.findViewById(R.id.tvQuestionText);
             ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
             radioGroup = itemView.findViewById(R.id.radioGroup);
+            rbYes = itemView.findViewById(R.id.rbYes);
+            rbNo = itemView.findViewById(R.id.rbNo);
         }
     }
 }

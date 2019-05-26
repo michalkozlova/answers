@@ -11,17 +11,17 @@ public class Store implements Serializable {
     private String storeName;
     private Integer storeType;
     private String storeID;
-    private ArrayList<Branch> branches;
+//    private ArrayList<Branch> branches;
     private ArrayList<Section> questionnaire;
 
     public Store() {
     }
 
-    public Store(String storeName, Integer storeType, String storeID, ArrayList<Branch> branches, ArrayList<Section> questionnaire) {
+    public Store(String storeName, Integer storeType, String storeID, ArrayList<Section> questionnaire) {
         this.storeName = storeName;
         this.storeType = storeType;
         this.storeID = storeID;
-        this.branches = branches;
+//        this.branches = branches;
         this.questionnaire = questionnaire;
     }
 
@@ -49,13 +49,13 @@ public class Store implements Serializable {
         this.storeID = storeID;
     }
 
-    public ArrayList<Branch> getBranches() {
-        return branches;
-    }
+//    public ArrayList<Branch> getBranches() {
+//        return branches;
+//    }
 
-    public void setBranches(ArrayList<Branch> branches) {
-        this.branches = branches;
-    }
+//    public void setBranches(ArrayList<Branch> branches) {
+//        this.branches = branches;
+//    }
 
     public ArrayList<Section> getQuestionnaire() {
         return questionnaire;
@@ -71,7 +71,7 @@ public class Store implements Serializable {
                 "storeName='" + storeName + '\'' +
                 ", storeType=" + storeType +
                 ", storeID='" + storeID + '\'' +
-                ", branches=" + branches +
+//                ", branches=" + branches +
                 ", questionnaire=" + questionnaire +
                 '}';
     }

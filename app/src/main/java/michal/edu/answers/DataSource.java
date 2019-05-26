@@ -73,6 +73,35 @@ public class DataSource {
         return mStores;
     }
 
+    public ArrayList<Branch> getBranchesFromFirebase(Store store, final BranchListener callback){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(store.getStoreID()).child("branches");
+        final ArrayList<Branch> mBranches = new ArrayList<>();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Branch value = snapshot.getValue(Branch.class);
+                    mBranches.add(value);
+                }
+
+                if (mBranches.isEmpty()){
+                    callback.onBranchCallback(mBranches);
+                    System.out.println("no branches");
+                }else {
+                    callback.onBranchCallback(mBranches);
+                    System.out.println(mBranches);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return mBranches;
+    }
+
 
     public void setStoreLogo(final Store store, final ImageView imageView, final TextView firstLetter, final Context context){
         StorageReference storageRef = MyImageStorage.getInstance();
