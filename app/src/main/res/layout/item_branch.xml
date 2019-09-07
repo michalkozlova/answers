@@ -24,16 +24,16 @@
         tools:ignore="MissingConstraints"
         android:enabled="false"/>
 
-        <Button
-            android:id="@+id/pinkButton"
-            android:layout_width="60dp"
-            android:layout_height="0dp"
-            android:background="@drawable/pink_button"
-            app:layout_constraintBottom_toBottomOf="@+id/whiteButton"
-            app:layout_constraintStart_toStartOf="@+id/whiteButton"
-            app:layout_constraintTop_toTopOf="@+id/whiteButton"
-            app:layout_constraintVertical_bias="0.0"
-            android:enabled="false"/>
+    <Button
+        android:id="@+id/pinkButton"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:background="@drawable/pink_button"
+        app:layout_constraintBottom_toBottomOf="@+id/whiteButton"
+        app:layout_constraintStart_toStartOf="@+id/whiteButton"
+        app:layout_constraintTop_toTopOf="@+id/whiteButton"
+        app:layout_constraintVertical_bias="0.0"
+        android:enabled="false"/>
 
     <Button
         android:id="@+id/smallWhiteButton"

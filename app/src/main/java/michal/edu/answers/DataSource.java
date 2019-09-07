@@ -48,25 +48,45 @@ public class DataSource {
     public ArrayList<Store> getStoresFromFirebase(final StoreListener callback){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores");
         final ArrayList<Store> mStores = new ArrayList<>();
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Store value = snapshot.getValue(Store.class);
-                    mStores.add(value);
+                    final Store value = snapshot.getValue(Store.class);
+
+                    if (value.getHasBranches()){
+                        mStores.add(value);
+                    }
+
+
+//                    getBranchesFromFirebase(value, new BranchListener() {
+//                        @Override
+//                        public void onBranchCallback(ArrayList<Branch> branches) {
+//                            if (branches.isEmpty()){
+//                                System.out.println("no branches for " + value.getStoreName());
+//                            }else {
+//                                mStores.add(value);
+//                            }
+//                        }
+//                    });
+
                 }
+
 
                 if (mStores.isEmpty()){
                     System.out.println("no stores");
                 } else {
                     callback.onStoreCallBack(mStores);
-                    System.out.println(mStores);
+                    System.out.println("stores: " + mStores);
                 }
+
+
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                System.out.println(databaseError);
             }
         });
 

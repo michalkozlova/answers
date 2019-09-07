@@ -95,13 +95,9 @@ public class AllBranchesFragment extends Fragment {
         dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
 
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffFEDC32"));
-        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
-        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffEA4C5F")));
-
-
-        View bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
-        //bottomBar.clearAnimation();
-        bottomBar.animate().translationY(0).setDuration(400);
+//        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
+//        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffEA4C5F")));
+//        navigation.animate().translationY(0).setDuration(400);
     }
 
 }

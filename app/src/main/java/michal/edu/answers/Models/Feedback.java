@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Feedback implements Serializable {
 
-    private String customerID;
+//    private String customerID;
     private String storeID;
     private String branchName;
     private long timestamp;
@@ -13,8 +13,8 @@ public class Feedback implements Serializable {
     private String city;
     private ArrayList<SectionAnswer> answerSections;
 
-    public Feedback(String customerID, String storeID, String branchName, long timestamp, String comment, String city, ArrayList<SectionAnswer> answerSections) {
-        this.customerID = customerID;
+    public Feedback(/*String customerID, */String storeID, String branchName, long timestamp, String comment, String city, ArrayList<SectionAnswer> answerSections) {
+//        this.customerID = customerID;
         this.storeID = storeID;
         this.branchName = branchName;
         this.timestamp = timestamp;
@@ -26,13 +26,13 @@ public class Feedback implements Serializable {
     public Feedback() {
     }
 
-    public String getCustomerID() {
-        return customerID;
-    }
-
-    public void setCustomerID(String customerID) {
-        this.customerID = customerID;
-    }
+//    public String getCustomerID() {
+//        return customerID;
+//    }
+//
+//    public void setCustomerID(String customerID) {
+//        this.customerID = customerID;
+//    }
 
     public String getStoreID() {
         return storeID;
@@ -85,7 +85,7 @@ public class Feedback implements Serializable {
     @Override
     public String toString() {
         return "Feedback{" +
-                "customerID='" + customerID + '\'' +
+//                "customerID='" + customerID + '\'' +
                 ", storeID='" + storeID + '\'' +
                 ", branchName='" + branchName + '\'' +
                 ", timestamp=" + timestamp +

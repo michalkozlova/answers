@@ -35,51 +35,60 @@ public class MainActivity extends AppCompatActivity {
 
     private DataSource dataSource = DataSource.getInstance();
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.my_feedbacks:
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.container, new MyFeedbackFragment())
-                            .addToBackStack("")
-                            .commit();
-                    return true;
-                case R.id.all_stores:
-                    dataSource.getStoresFromFirebase(new StoreListener() {
-                        @Override
-                        public void onStoreCallBack(ArrayList<Store> stores) {
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.container, AllStoresFragment.newInstance(stores))
-                                    .addToBackStack("")
-                                    .commit();
-                        }
-                    });
-                    return true;
-                case R.id.personal_details:
-                    checkIfLoggedIn();
-                    return true;
-            }
-            return false;
-        }
-    };
+//    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+//            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+//
+//        @Override
+//        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//            switch (item.getItemId()) {
+//                case R.id.my_feedbacks:
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.container, new MyFeedbackFragment())
+//                            .addToBackStack("")
+//                            .commit();
+//                    return true;
+//                case R.id.all_stores:
+//                    dataSource.getStoresFromFirebase(new StoreListener() {
+//                        @Override
+//                        public void onStoreCallBack(ArrayList<Store> stores) {
+//                            getSupportFragmentManager()
+//                                    .beginTransaction()
+//                                    .replace(R.id.container, AllStoresFragment.newInstance(stores))
+//                                    .addToBackStack("")
+//                                    .commit();
+//                        }
+//                    });
+//                    return true;
+//                case R.id.personal_details:
+//                    checkIfLoggedIn();
+//                    return true;
+//            }
+//            return false;
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
-        navigation.setSelectedItemId(R.id.all_stores);
-        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
+//        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        navigation.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+//        navigation.setSelectedItemId(R.id.all_stores);
+//        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
 
-        queryTest();
+        dataSource.getStoresFromFirebase(new StoreListener() {
+            @Override
+            public void onStoreCallBack(ArrayList<Store> stores) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, AllStoresFragment.newInstance(stores))
+                        .addToBackStack("")
+                        .commit();
+            }
+        });
 
     }
 
@@ -113,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+//TODO: addListenerForSingleValueEvent in both projects
     private void queryTest(){
         DatabaseReference ref = FirebaseDatabase.getInstance()
                 .getReference("Feedbacks")

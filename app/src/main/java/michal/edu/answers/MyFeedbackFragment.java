@@ -36,8 +36,8 @@ public class MyFeedbackFragment extends Fragment {
 
 
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffFEDC32"));
-        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
-        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffEA4C5F")));
+//        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
+//        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffEA4C5F")));
 
         return v;
     }

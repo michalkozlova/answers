@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 public class Section implements Serializable {
 
-    private final static String STORE_APPEARANCE = "Store Appearance";
-    private final static String STORE_CLERK = "Store Clerk";
-    private final static String MERCHANDISE = "Merchandise";
+    private final static String STORE_APPEARANCE_1 = "Store Appearance";
+    private final static String STORE_CLERK_2 = "Store Clerk";
+    private final static String STORE_MERCHANDISE_3 = "Merchandise";
 
-    private final static String RESTAURANT_APPEARANCE = "Restaurant Appearance";
-    private final static String RESTAURANT_STAFF = "Restaurant Staff";
-    private final static String FOOD = "Food";
+    private final static String RESTAURANT_APPEARANCE_1 = "Restaurant Appearance";
+    private final static String RESTAURANT_STAFF_2 = "Restaurant Staff";
+    private final static String RESTAURANT_FOOD_3 = "Food";
 
     private String sectionName;
     private ArrayList<Question> questions;

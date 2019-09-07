@@ -48,7 +48,7 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
     private Button btnNext;
     private View bottomBar;
     private Store thisStore;
-    private String thisBranchName, fullDate, fullTime, fullDateAndTime, userID;
+    private String thisBranchName, fullDate, fullTime, fullDateAndTime;
     private long timestamp;
     private SharedPreferences sharedPref;
 
@@ -68,12 +68,12 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_start_feedback, container, false);
 
-        try {
-            userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        }catch (NullPointerException e){
-            System.out.println(e);
-            userID = "Anonymous";
-        }
+//        try {
+//            userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        }catch (NullPointerException e){
+//            System.out.println(e);
+//            userID = "Anonymous";
+//        }
 
         getFullDateAndTime();
 
@@ -121,7 +121,7 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
         firstLetter = v.findViewById(R.id.firstLetter);
         tvStoreNameBranchName = v.findViewById(R.id.tvStoreNameBranchName);
         btnNext = v.findViewById(R.id.btnNext);
-        bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
+//        bottomBar = getActivity().getWindow().findViewById(R.id.navigation);
         tvFullDate = v.findViewById(R.id.tvFullDate);
         tvFullTime = v.findViewById(R.id.tvFullTime);
 
@@ -139,8 +139,8 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
         dataSource.setStoreLogo(thisStore, cardImage, firstLetter, getContext());
         tvStoreNameBranchName.setText(thisStore.getStoreName() + " / " + thisBranchName);
 
-        bottomBar.clearAnimation();
-        bottomBar.animate().translationY(bottomBar.getHeight()).setDuration(400);
+//        bottomBar.clearAnimation();
+//        bottomBar.animate().translationY(bottomBar.getHeight()).setDuration(400);
 
     }
 
@@ -245,7 +245,7 @@ public class StartFeedbackFragment extends DialogFragment implements DatePickerD
 
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("customerID", userID);
+//                editor.putString("customerID", userID);
                 editor.putString("storeID", thisStore.getStoreID());
                 editor.putString("branchName", thisBranchName);
                 editor.putString("city", city);

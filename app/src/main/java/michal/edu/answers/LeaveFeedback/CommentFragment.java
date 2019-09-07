@@ -133,7 +133,7 @@ public class CommentFragment extends Fragment {
     }
 
     private void readDataFromSharedPref(){
-        String customerID = sharedPref.getString("customerID", "Anonymous");
+//        String customerID = sharedPref.getString("customerID", "Anonymous");
         String storeID = sharedPref.getString("storeID", "storeID");
         String branchName = sharedPref.getString("branchName", "branchName");
         String city = sharedPref.getString("city", "city");
@@ -159,7 +159,7 @@ public class CommentFragment extends Fragment {
         }
 
 
-        Feedback feedback = new Feedback(customerID, storeID, branchName, timestamp, getComment(), city, sectionAnswers);
+        Feedback feedback = new Feedback(storeID, branchName, timestamp, getComment(), city, sectionAnswers);
         System.out.println(feedback);
 
         saveToFB(feedback);

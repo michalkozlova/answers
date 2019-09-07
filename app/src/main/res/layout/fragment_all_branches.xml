@@ -82,21 +82,21 @@
         </android.support.v7.widget.CardView>
     </android.support.v7.widget.CardView>
 
-    <EditText
-        android:id="@+id/etSearchBranch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="Search by name or address"
-        android:inputType="textPersonName"
-        android:textColor="@color/pink"
-        android:textColorHint="@color/pink"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allBranchesToolbar" />
+    <!--<EditText-->
+        <!--android:id="@+id/etSearchBranch"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="32dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:ems="10"-->
+        <!--android:hint="Search by name or address"-->
+        <!--android:inputType="textPersonName"-->
+        <!--android:textColor="@color/pink"-->
+        <!--android:textColorHint="@color/pink"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/allBranchesToolbar" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvBranches"
@@ -106,7 +106,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/etSearchBranch" />
+        app:layout_constraintTop_toBottomOf="@+id/blackCardView" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"

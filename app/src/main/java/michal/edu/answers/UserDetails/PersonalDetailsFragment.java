@@ -68,8 +68,8 @@ public class PersonalDetailsFragment extends Fragment {
         tvNumber.setText(customer.getCustomerPhone());
 
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ffEA4C5F"));
-        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
-        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ff4954F7")));
+//        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
+//        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ff4954F7")));
     }
 
 }
