@@ -96,7 +96,7 @@ public class DataSource {
     public ArrayList<Branch> getBranchesFromFirebase(Store store, final BranchListener callback){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Stores").child(store.getStoreID()).child("branches");
         final ArrayList<Branch> mBranches = new ArrayList<>();
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {

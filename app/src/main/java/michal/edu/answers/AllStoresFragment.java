@@ -86,9 +86,6 @@ public class AllStoresFragment extends Fragment {
         gvStores.setAdapter(adapter);
 
         getActivity().getWindow().setStatusBarColor(Color.parseColor("#ff4954F7"));
-//        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.navigation);
-//        navigation.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#ffFEDC32")));
-//        navigation.animate().translationY(0).setDuration(400);
     }
 
     private void getAllLists(){
